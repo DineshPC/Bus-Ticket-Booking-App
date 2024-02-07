@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Booking"
+        android:id="@+id/dashbord"
+        android:icon="@drawable/ic_booking"
+        />
+
+
+    <item
+        android:title="Settings"
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_setting"
+
+        />
+</menu>
