@@ -1,4 +1,4 @@
-package com.example.busticketbookingapp;
+package com.example.busticketbookingapp.Common;
 
 public class HelperClass {
 

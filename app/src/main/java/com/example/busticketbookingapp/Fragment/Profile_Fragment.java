@@ -1,4 +1,4 @@
-package com.example.busticketbookingapp.Fragments.sampledata;
+package com.example.busticketbookingapp.Fragment;
 
 import android.os.Bundle;
 
@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import com.example.busticketbookingapp.R;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link Booking_Fragment#newInstance} factory method to
+ * Fragment simple {@link Fragment} subclass.
+ * Use the {@link Profile_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Booking_Fragment extends Fragment {
+public class Profile_Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class Booking_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Booking_Fragment() {
+    public Profile_Fragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class Booking_Fragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Dashbord_Fragment.
+     * @return Fragment new instance of fragment Profile_Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Booking_Fragment newInstance(String param1, String param2) {
-        Booking_Fragment fragment = new Booking_Fragment();
+    public static Profile_Fragment newInstance(String param1, String param2) {
+        Profile_Fragment fragment = new Profile_Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class Booking_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_booking, container, false);
+        return inflater.inflate(R.layout.fragment_profile_, container, false);
     }
 }

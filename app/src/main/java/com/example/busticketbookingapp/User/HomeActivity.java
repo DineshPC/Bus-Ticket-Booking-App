@@ -1,11 +1,12 @@
-package com.example.busticketbookingapp;
+package com.example.busticketbookingapp.User;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.busticketbookingapp.Fragments.sampledata.Booking_Fragment;
-import com.example.busticketbookingapp.Fragments.sampledata.Profile_Fragment;
+import com.example.busticketbookingapp.Fragment.Booking_Fragment;
+import com.example.busticketbookingapp.Fragment.Profile_Fragment;
+import com.example.busticketbookingapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.annotation.SuppressLint;
