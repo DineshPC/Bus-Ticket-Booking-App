@@ -13,6 +13,7 @@ import com.example.busticketbookingapp.R;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
+    Button busBtn;
     Button logOutBtn;
 
     @SuppressLint("MissingInflatedId")
@@ -21,7 +22,19 @@ public class AdminHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
 
+        busBtn = findViewById(R.id.button);
         logOutBtn = findViewById(R.id.button6);
+
+
+        busBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminHomeActivity.this, AdminBusActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         logOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -31,7 +44,6 @@ public class AdminHomeActivity extends AppCompatActivity {
     }
 
     public void logoutUser() {
-
         Intent intent = new Intent(AdminHomeActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

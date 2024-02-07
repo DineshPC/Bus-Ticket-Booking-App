@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Admin.AdminAddBusActivity">
+
+    <!-- Bus Number EditText -->
+    <EditText
+        android:id="@+id/busNumberEditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:hint="Enter bus number"
+        android:ems="10"
+        android:background="@drawable/edit_text_shape"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        />
+
+
+    <!-- Bus Plate Number EditText -->
+    <EditText
+        android:id="@+id/busPlateNumberEditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:hint="Plate Number"
+        android:ems="10"
+        android:background="@drawable/edit_text_shape"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/busNumberEditText"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        />
+
+    <!-- Source EditText -->
+    <EditText
+        android:id="@+id/sourceEditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:hint="Source"
+        android:ems="10"
+        android:background="@drawable/edit_text_shape"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/busPlateNumberEditText"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        />
+
+    <!-- Destination EditText -->
+    <EditText
+        android:id="@+id/destinationEditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:hint="Destination"
+        android:ems="10"
+        android:background="@drawable/edit_text_shape"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sourceEditText"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        />
+
+    <!-- Routes EditText (Multiline) -->
+    <EditText
+        android:id="@+id/routesEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Routes (Multiple Stops)"
+        android:ems="10"
+        android:background="@drawable/edit_text_shape"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        android:maxLines="5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/destinationEditText"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        />
+
+    <!-- Add Bus Button -->
+    <Button
+        android:id="@+id/addBusButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Bus"
+        app:layout_constraintTop_toBottomOf="@id/routesEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
