@@ -13,6 +13,12 @@
         android:theme="@style/Theme.BusTicketBookingApp"
         tools:targetApi="31">
         <activity
+            android:name=".Admin.AdminAddRouteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Admin.AdminRouteActivity"
+            android:exported="false" />
+        <activity
             android:name=".Admin.AdminAddBusActivity"
             android:exported="false" />
         <activity
