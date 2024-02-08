@@ -1,7 +1,10 @@
 package com.example.busticketbookingapp.Admin;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -77,8 +80,66 @@ public class AdminRouteActivity extends AppCompatActivity {
         );
         layoutParams.setMargins(16, 8, 16, 0);
         textView.setLayoutParams(layoutParams);
+
+        textView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showDeleteDialog(text); // Show delete dialog when long click
+                return true;
+            }
+        });
         linearLayoutContainer.addView(textView);
     }
+
+    private void showDeleteDialog(final String text) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Delete " + text + "?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Delete the TextView from the layout
+                        deleteTextView(text);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Dismiss the dialog
+                        dialog.dismiss();
+                    }
+                });
+        // Create and show the dialog
+        builder.create().show();
+    }
+
+    private void deleteTextView(final String text) {
+        Query query = routesReference.orderByChild("name").equalTo(text);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Iterate through the results and delete the node
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    snapshot.getRef().removeValue(); // Remove the node from Firebase
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println("Database Error: " + databaseError.getMessage());
+            }
+        });
+
+        // Remove the TextView from the layout
+        for (int i = 0; i < linearLayoutContainer.getChildCount(); i++) {
+            View child = linearLayoutContainer.getChildAt(i);
+            if (child instanceof TextView) {
+                TextView textView = (TextView) child;
+                if (textView.getText().toString().equals(text)) {
+                    linearLayoutContainer.removeViewAt(i);
+                    break;
+                }
+            }
+        }
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -88,5 +149,12 @@ public class AdminRouteActivity extends AppCompatActivity {
             routesReference.removeEventListener(valueEventListener);
         }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish(); // Finish the current activity when leaving
+    }
+
 
 }

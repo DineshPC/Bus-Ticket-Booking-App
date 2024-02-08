@@ -141,4 +141,9 @@ public class MainActivity extends AppCompatActivity {
     public void makeToast(String message){
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
+    protected void onStop() {
+        super.onStop();
+        finish(); // Finish the current activity when leaving
+    }
 }

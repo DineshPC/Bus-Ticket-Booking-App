@@ -58,4 +58,10 @@ public class AdminAddRouteActivity extends AppCompatActivity {
         reference.child(UID).child("ID").setValue(UID); // Set UID under the route key
         reference.child(UID).child("name").setValue(routeName); // Set routeName under the route key
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish(); // Finish the current activity when leaving
+    }
 }

@@ -22,8 +22,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        />
+        android:layout_marginTop="16dp" />
 
 
     <!-- Bus Plate Number EditText -->
@@ -42,8 +41,7 @@
         app:layout_constraintTop_toBottomOf="@id/busNumberEditText"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        />
+        android:layout_marginTop="16dp" />
 
     <!-- Source EditText -->
     <EditText
@@ -61,8 +59,7 @@
         app:layout_constraintTop_toBottomOf="@id/busPlateNumberEditText"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        />
+        android:layout_marginTop="16dp" />
 
     <!-- Destination EditText -->
     <EditText
@@ -80,29 +77,19 @@
         app:layout_constraintTop_toBottomOf="@id/sourceEditText"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        />
+        android:layout_marginTop="16dp" />
 
-    <!-- Routes EditText (Multiline) -->
-    <EditText
-        android:id="@+id/routesEditText"
+    <!-- Routes Spinner -->
+    <Spinner
+        android:id="@+id/routesSpinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Routes (Multiple Stops)"
-        android:ems="10"
-        android:background="@drawable/edit_text_shape"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:inputType="textMultiLine"
-        android:minLines="3"
-        android:maxLines="5"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/destinationEditText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/destinationEditText"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        />
+        android:layout_marginEnd="16dp" />
 
     <!-- Add Bus Button -->
     <Button
@@ -110,12 +97,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Bus"
-        app:layout_constraintTop_toBottomOf="@id/routesEditText"
+        app:layout_constraintTop_toBottomOf="@id/routesListView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        />
+        android:layout_marginEnd="16dp" />
+
+    <!-- Routes ListView -->
+    <ListView
+        android:id="@+id/routesListView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/routesSpinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

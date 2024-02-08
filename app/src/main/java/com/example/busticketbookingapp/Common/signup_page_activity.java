@@ -105,4 +105,8 @@ public class signup_page_activity extends AppCompatActivity {
             }
         });
     }
+    protected void onStop() {
+        super.onStop();
+        finish(); // Finish the current activity when leaving
+    }
 }
