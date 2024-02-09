@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 
 public class AdminAddBusActivity extends AppCompatActivity {
 
-    EditText busNumberEditText, busPlateNumberEditText, sourceEditText, destinationEditText, routesEditText;
+    EditText busNumberEditText, busPlateNumberEditText, sourceEditText, destinationEditText, numberOfSeatsInBus;
     Button addBusButton;
     Spinner routesSpinner;
     ListView routesListView;
@@ -37,6 +37,7 @@ public class AdminAddBusActivity extends AppCompatActivity {
 
         busNumberEditText = findViewById(R.id.busNumberEditText);
         busPlateNumberEditText = findViewById(R.id.busPlateNumberEditText);
+        numberOfSeatsInBus = findViewById(R.id.numberOfSeatsEditText);
         sourceEditText = findViewById(R.id.sourceEditText);
         destinationEditText = findViewById(R.id.destinationEditText);
         addBusButton = findViewById(R.id.addBusButton);
@@ -84,13 +85,90 @@ public class AdminAddBusActivity extends AppCompatActivity {
         addBusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // logic to add bus to Firebase here
+                if(validateBusNumber()){
+                    if(validateBusPlateNumber()){
+                        if(validateNumberOfSeatsOnBus()){
+                            if(validateSourceAndDestination()){
+                                if(validateSelectRoute()){
+
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    makeToast("Input error");
+                }
             }
+
         });
 
         readDataFromFirebase();
 
 
+    }
+
+
+    private boolean validateBusNumber() {
+        String busNumber = busNumberEditText.getText().toString();
+        if(busNumber.isEmpty()){
+            makeToast("Please enter a bus number (eg. 100, A370)");
+            return false;
+        }else if (busNumber.length()>6){
+            makeToast("Bus number length must be between 1-6 characters");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateBusPlateNumber() {
+        String busPlateNumber = busPlateNumberEditText.getText().toString();
+        if(busPlateNumber.isEmpty()){
+            makeToast("Please enter a bus plate number (eg. MH04AB1001)");
+            return false;
+        }else if (busPlateNumber.length()!=10){
+            makeToast("Bus plate number must be 10 characters");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateNumberOfSeatsOnBus() {
+        String numberOfSeats = numberOfSeatsInBus.getText().toString();
+        if(numberOfSeats.isEmpty()){
+            makeToast("Please enter a number of seats on the bus");
+            return false;
+        }
+        int seats = Integer.parseInt(numberOfSeats);
+        if (seats < 10 || seats > 100){
+            makeToast("Number of seats must be between 10-100");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateSourceAndDestination() {
+        String source = sourceEditText.getText().toString();
+        String destination = destinationEditText.getText().toString();
+
+        if(source.isEmpty()){
+            makeToast("Source cannot be empty");
+            return false;
+        }else if (destination.isEmpty()){
+            makeToast("Destination cannot be empty");
+            return false;
+        }else if (source.equals(destination)){
+            makeToast("Source and destination cannot be the same");
+            return false;
+        }
+        return true;
+    }
+
+    private Boolean validateSelectRoute(){
+        if (selectedRoutes.isEmpty() || selectedRoutes.size() <2) {
+            makeToast("Please select at least two route.");
+            return false;
+        }
+        return true;
     }
 
     private void readDataFromFirebase() {
@@ -115,6 +193,10 @@ public class AdminAddBusActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void makeToast(String message){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     protected void onStop() {

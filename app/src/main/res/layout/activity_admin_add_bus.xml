@@ -149,18 +149,102 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp" />
 
+        <TextView
+            android:id="@+id/minimumFareTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Minimum Fare (if 5 stops between passenger source and destination)"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/routesListView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp" />
+
+        <!-- Minimum Fare EditText -->
+        <EditText
+            android:id="@+id/minimumFareEditText"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="Enter minimum fare"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:background="@drawable/edit_text_shape"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/minimumFareTextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/intermediateFareTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Intermediate Fare (if 6-10 stops between passenger source and destination)"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/minimumFareEditText"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp" />
+
+        <!-- Minimum Fare EditText -->
+        <EditText
+            android:id="@+id/intermediateFareEditText"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="Enter intermediate fare"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:background="@drawable/edit_text_shape"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/intermediateFareTextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/maxFareTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max Fare (if more then 10 stops between passenger source and destination)"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/intermediateFareEditText"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp" />
+
+        <!-- Minimum Fare EditText -->
+        <EditText
+            android:id="@+id/maxFareEditText"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="Enter intermediate fare"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:background="@drawable/edit_text_shape"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/maxFareTextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp" />
+
         <!-- Add Bus Button -->
         <Button
             android:id="@+id/addBusButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="104dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:text="Add Bus"
-            app:layout_constraintTop_toBottomOf="@id/routesListView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+            app:layout_constraintTop_toBottomOf="@id/maxFareEditText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
