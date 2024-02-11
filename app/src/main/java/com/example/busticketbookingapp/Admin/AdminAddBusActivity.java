@@ -3,8 +3,11 @@ package com.example.busticketbookingapp.Admin;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +31,10 @@ public class AdminAddBusActivity extends AppCompatActivity {
     List<String> routeNames;
     ArrayAdapter<String> listViewAdapter;
     List<String> selectedRoutes;
+    LinearLayout timeBoxContainer;
+    LinearLayout parentLayout;
+    Button addTimeBoxButton;
+
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +50,9 @@ public class AdminAddBusActivity extends AppCompatActivity {
         addBusButton = findViewById(R.id.addBusButton);
         routesSpinner = findViewById(R.id.routesSpinner);
         routesListView = findViewById(R.id.routesListView);
-
+        timeBoxContainer = findViewById(R.id.timeBoxContainer);
+        addTimeBoxButton = findViewById(R.id.addTimeBoxButton);
+        parentLayout = findViewById(R.id.parentLayout); // Replace R.id.parentLinearLayout with the actual ID of the parent layout
         routeNames = new ArrayList<>();
         routeNames.add("None");
         selectedRoutes = new ArrayList<>();
@@ -82,29 +91,26 @@ public class AdminAddBusActivity extends AppCompatActivity {
             }
         });
 
-        addBusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(validateBusNumber()){
-                    if(validateBusPlateNumber()){
-                        if(validateNumberOfSeatsOnBus()){
-                            if(validateSourceAndDestination()){
-                                if(validateSelectRoute()){
+        addBusButton.setOnClickListener(v -> {
+            if(validateBusNumber()){
+                if(validateBusPlateNumber()){
+                    if(validateNumberOfSeatsOnBus()){
+                        if(validateSourceAndDestination()){
+                            if(validateSelectRoute()){
 
-                                }
                             }
                         }
                     }
-                }else{
-                    makeToast("Input error");
                 }
+            }else{
+                makeToast("Input error");
             }
-
         });
-
         readDataFromFirebase();
 
-
+        addTimeBoxButton.setOnClickListener(v ->
+                addNewTimeBox()
+        );
     }
 
 
@@ -194,6 +200,19 @@ public class AdminAddBusActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void addNewTimeBox() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View timeBoxView = inflater.inflate(R.layout.activity_admin_add_bus_time, null); // Assuming time_box_layout is the XML layout file for the time box
+
+        // Add the inflated layout to the parent layout below the existing timeBoxContainer
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        parentLayout.addView(timeBoxView);    }
+
+
 
     public void makeToast(String message){
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

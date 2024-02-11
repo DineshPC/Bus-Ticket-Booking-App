@@ -21,12 +21,9 @@ public class AdminBusActivity extends AppCompatActivity {
         addBusBtn = findViewById(R.id.addBusButton);
 
 
-        addBusBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AdminBusActivity.this, AdminAddBusActivity.class);
-                startActivity(intent);
-            }
+        addBusBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminBusActivity.this, AdminAddBusActivity.class);
+            startActivity(intent);
         });
     }
 
