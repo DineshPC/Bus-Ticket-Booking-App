@@ -3,7 +3,6 @@ package com.example.busticketbookingapp.Admin;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.NestedScrollView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -23,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 public class AdminAddBusActivity extends AppCompatActivity {
 
     EditText busNumberEditText, busPlateNumberEditText, sourceEditText, destinationEditText, numberOfSeatsInBus;
+    EditText minimumBusFare, intermediateBusFare, maximumBusFare;
     Button addBusButton;
     Spinner routesSpinner;
     ListView routesListView;
@@ -30,6 +30,7 @@ public class AdminAddBusActivity extends AppCompatActivity {
     DatabaseReference routesReference;
     List<String> routeNames;
     ArrayAdapter<String> listViewAdapter;
+    List<LinearLayout> timeBoxContainers;
     List<String> selectedRoutes;
     LinearLayout timeBoxContainer;
     LinearLayout parentLayout;
@@ -52,13 +53,18 @@ public class AdminAddBusActivity extends AppCompatActivity {
         routesListView = findViewById(R.id.routesListView);
         timeBoxContainer = findViewById(R.id.timeBoxContainer);
         addTimeBoxButton = findViewById(R.id.addTimeBoxButton);
-        parentLayout = findViewById(R.id.parentLayout); // Replace R.id.parentLinearLayout with the actual ID of the parent layout
+        minimumBusFare = findViewById(R.id.minimumFareEditText);
+        intermediateBusFare = findViewById(R.id.intermediateFareEditText);
+        maximumBusFare = findViewById(R.id.maxFareEditText);
+        parentLayout = findViewById(R.id.parentLayout);
         routeNames = new ArrayList<>();
         routeNames.add("None");
         selectedRoutes = new ArrayList<>();
+        timeBoxContainers = new ArrayList<>();
 
         listViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selectedRoutes);
         routesListView.setAdapter(listViewAdapter);
+
 
 
         // Set onItemSelectedListener for Routes Spinner
@@ -97,13 +103,15 @@ public class AdminAddBusActivity extends AppCompatActivity {
                     if(validateNumberOfSeatsOnBus()){
                         if(validateSourceAndDestination()){
                             if(validateSelectRoute()){
-
+                                if(validateFare()){
+                                    uploadBusData();
+                                }
                             }
                         }
                     }
                 }
             }else{
-                makeToast("Input error");
+                // makeToast("Input error");
             }
         });
         readDataFromFirebase();
@@ -113,17 +121,87 @@ public class AdminAddBusActivity extends AppCompatActivity {
         );
     }
 
+    private void uploadBusData() {
+        String busNumber = busNumberEditText.getText().toString();
+        String busPlateNumber = busPlateNumberEditText.getText().toString().toUpperCase();
+        int numberOfSeats = Integer.parseInt(numberOfSeatsInBus.getText().toString());
+        String source = sourceEditText.getText().toString();
+        String destination = destinationEditText.getText().toString();
+
+        double minimumFare = Double.parseDouble(minimumBusFare.getText().toString());
+        double intermediateFare = Double.parseDouble(intermediateBusFare.getText().toString());
+        double maximumFare = Double.parseDouble(maximumBusFare.getText().toString());
+
+        // Create a list to store TimeBoxData objects
+        List<TimeBoxData> timeBoxDataList = new ArrayList<>();
+
+        for (LinearLayout timeBoxContainer : timeBoxContainers) {
+            // Retrieve data from timeBoxContainer
+            EditText startTimeEditText = timeBoxContainer.findViewById(R.id.startTimeEditText);
+            EditText endTimeEditText = timeBoxContainer.findViewById(R.id.endTimeEditText);
+            RadioGroup directionRadioGroup = timeBoxContainer.findViewById(R.id.directionRadioGroup);
+            String startTime = startTimeEditText.getText().toString();
+            String endTime = endTimeEditText.getText().toString();
+            String direction = (directionRadioGroup.getCheckedRadioButtonId() == R.id.sourceToDestinationRadioButton) ? "Source to Destination" : "Destination to Source";
+
+            // Add the retrieved data to the list
+            timeBoxDataList.add(new TimeBoxData(startTime, endTime, direction));
+        }
+
+        // Create a new Bus object with the retrieved values
+        Bus bus = new Bus(busNumber, busPlateNumber, numberOfSeats, source, destination, selectedRoutes, minimumFare, intermediateFare, maximumFare, timeBoxDataList);
+
+        // Upload the Bus object to the database
+        uploadBusToDatabase(bus);
+    }
+
+
+    // Method to upload bus data to the database
+    private void uploadBusToDatabase(Bus bus) {
+        // Implement the logic to upload the bus data to your database here
+    }
+
+
+    private boolean validateFare() {
+        String minimumFareString = minimumBusFare.getText().toString();
+        String intermediateFareString = intermediateBusFare.getText().toString();
+        String maximumFareString = maximumBusFare.getText().toString();
+
+        if (!minimumFareString.isEmpty() && !intermediateFareString.isEmpty() && !maximumFareString.isEmpty()) {
+            try {
+                int minimumFare = Integer.parseInt(minimumFareString);
+                int intermediateFare = Integer.parseInt(intermediateFareString);
+                int maximumFare = Integer.parseInt(maximumFareString);
+
+                if (minimumFare >= 0 && minimumFare<1000 && intermediateFare >= 0 && intermediateFare<1000 && maximumFare >= 0 && maximumFare<1000) {
+                    return true;
+                } else {
+                    minimumBusFare.setError("fare cannot be negative and greater than 1000");
+                }
+            } catch (NumberFormatException e) {
+                makeToast(e.getMessage());
+            }
+        } else {
+            minimumBusFare.setError("Fare cannot be empty");
+        }
+        // Validation failed
+        return false;
+    }
+
+
 
     private boolean validateBusNumber() {
         String busNumber = busNumberEditText.getText().toString();
-        if(busNumber.isEmpty()){
+        if(!busNumber.isEmpty()) {
+            if (busNumber.length()<7){
+                return true;
+            }else{
+                makeToast("Bus number length must be between 1-6 characters");
+            }
+        }else{
             makeToast("Please enter a bus number (eg. 100, A370)");
-            return false;
-        }else if (busNumber.length()>6){
-            makeToast("Bus number length must be between 1-6 characters");
-            return false;
         }
-        return true;
+        return false;
     }
 
     private boolean validateBusPlateNumber() {
@@ -203,14 +281,19 @@ public class AdminAddBusActivity extends AppCompatActivity {
 
     private void addNewTimeBox() {
         LayoutInflater inflater = LayoutInflater.from(this);
-        View timeBoxView = inflater.inflate(R.layout.activity_admin_add_bus_time, null); // Assuming time_box_layout is the XML layout file for the time box
+        @SuppressLint("InflateParams") View timeBoxView = inflater.inflate(R.layout.activity_admin_add_bus_time, null); // Assuming time_box_layout is the XML layout file for the time box
 
         // Add the inflated layout to the parent layout below the existing timeBoxContainer
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        parentLayout.addView(timeBoxView);    }
+        parentLayout.addView(timeBoxView);
+
+        // Add the timeBoxContainer to the list
+        timeBoxContainers.add((LinearLayout) timeBoxView.findViewById(R.id.timeBoxContainer));
+    }
+
 
 
 

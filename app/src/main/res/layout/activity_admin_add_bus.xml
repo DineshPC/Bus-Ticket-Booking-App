@@ -141,6 +141,7 @@
         <!-- Routes ListView -->
         <ListView
             android:id="@+id/routesListView"
+            android:background="@drawable/edit_text_shape"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
@@ -167,7 +168,7 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:hint="Enter minimum fare"
-            android:inputType="numberDecimal"
+            android:inputType="number"
             android:ems="10"
             android:background="@drawable/edit_text_shape"
             android:paddingStart="15dp"
@@ -195,7 +196,7 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:hint="Enter intermediate fare"
-            android:inputType="numberDecimal"
+            android:inputType="number"
             android:ems="10"
             android:background="@drawable/edit_text_shape"
             android:paddingStart="15dp"
@@ -222,8 +223,8 @@
             android:id="@+id/maxFareEditText"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:hint="Enter intermediate fare"
-            android:inputType="numberDecimal"
+            android:hint="Enter maximum fare"
+            android:inputType="number"
             android:ems="10"
             android:background="@drawable/edit_text_shape"
             android:paddingStart="15dp"
@@ -305,6 +306,7 @@
                         android:textColor="@android:color/black"
                         android:textColorHint="@android:color/darker_gray"
                         android:textSize="16sp" />
+
                 </LinearLayout>
 
                 <!-- End Text -->
