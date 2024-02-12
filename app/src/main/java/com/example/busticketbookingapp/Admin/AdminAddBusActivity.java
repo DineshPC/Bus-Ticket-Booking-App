@@ -15,7 +15,10 @@ import android.view.View;
 import android.widget.*;
 import com.google.firebase.database.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.example.busticketbookingapp.R;
 import com.google.firebase.database.DatabaseReference;
 
@@ -65,7 +68,7 @@ public class AdminAddBusActivity extends AppCompatActivity {
         listViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selectedRoutes);
         routesListView.setAdapter(listViewAdapter);
 
-
+        timeBoxContainers.add(timeBoxContainer);
 
         // Set onItemSelectedListener for Routes Spinner
         routesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -104,7 +107,8 @@ public class AdminAddBusActivity extends AppCompatActivity {
                         if(validateSourceAndDestination()){
                             if(validateSelectRoute()){
                                 if(validateFare()){
-                                    uploadBusData();
+                                    String busPlateNumber = busPlateNumberEditText.getText().toString().toUpperCase();
+                                    checkIfBusExists(busPlateNumber);
                                 }
                             }
                         }
@@ -151,15 +155,63 @@ public class AdminAddBusActivity extends AppCompatActivity {
         // Create a new Bus object with the retrieved values
         Bus bus = new Bus(busNumber, busPlateNumber, numberOfSeats, source, destination, selectedRoutes, minimumFare, intermediateFare, maximumFare, timeBoxDataList);
 
+
         // Upload the Bus object to the database
         uploadBusToDatabase(bus);
     }
 
-
-    // Method to upload bus data to the database
     private void uploadBusToDatabase(Bus bus) {
-        // Implement the logic to upload the bus data to your database here
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference busesReference = databaseReference.child("Buses");
+        String busId = busPlateNumberEditText.getText().toString().toUpperCase();
+
+        // Convert timeBoxDataList to a HashMap to store it in Firebase
+        HashMap<String, TimeBoxData> timeBoxDataMap = new HashMap<>();
+        for (int i = 0; i < bus.getTimeBoxDataList().size(); i++) {
+            timeBoxDataMap.put("timeBox_" + i, bus.getTimeBoxDataList().get(i));
+        }
+
+        // Set the bus data including timeBoxDataList
+        bus.setTimeBoxDataList(null); // Exclude timeBoxDataList from Bus object
+        Map<String, Object> busValues = bus.toMap();
+        busValues.put("timeBoxDataList", timeBoxDataMap);
+
+        // Upload the bus data to Firebase
+        busesReference.child(busId).setValue(busValues)
+                .addOnSuccessListener(aVoid -> {
+                    // Data uploaded successfully
+                    makeToast("Bus data uploaded successfully");
+                })
+                .addOnFailureListener(e -> {
+                    // Error occurred while uploading data
+                    makeToast("Failed to upload bus data: " + e.getMessage());
+                });
     }
+
+    private void checkIfBusExists(String busId) {
+
+        DatabaseReference busesRef = FirebaseDatabase.getInstance().getReference("Buses");
+
+        busesRef.orderByChild("busPlateNumber").equalTo(busId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Bus with the same ID already exists
+                    makeToast("Bus with plate number " + busId + " already exists.");
+                } else {
+                    // Bus does not exist, proceed with adding the bus
+                    uploadBusData();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Error occurred, handle accordingly
+                makeToast("Error checking bus existence: " + databaseError.getMessage());
+            }
+        });
+    }
+
 
 
     private boolean validateFare() {

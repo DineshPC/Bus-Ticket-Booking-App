@@ -1,6 +1,8 @@
 package com.example.busticketbookingapp.Admin;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Bus {
     private String busNumber;
@@ -110,5 +112,22 @@ public class Bus {
 
     public void setMaximumFare(double maximumFare) {
         this.maximumFare = maximumFare;
+    }
+
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("busNumber", busNumber);
+        result.put("busPlateNumber", busPlateNumber);
+        result.put("numberOfSeats", numberOfSeats);
+        result.put("source", source);
+        result.put("destination", destination);
+        result.put("selectedRoutes", selectedRoutes);
+        result.put("minimumFare", minimumFare);
+        result.put("intermediateFare", intermediateFare);
+        result.put("maximumFare", maximumFare);
+        // You can include other fields as needed
+
+        return result;
     }
 }
