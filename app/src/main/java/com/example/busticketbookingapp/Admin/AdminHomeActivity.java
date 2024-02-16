@@ -16,6 +16,7 @@ public class AdminHomeActivity extends AppCompatActivity {
     Button busBtn;
     Button routeBtn;
     Button logOutBtn;
+    Button addAdminUserBtn;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -26,7 +27,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         busBtn = findViewById(R.id.button);
         logOutBtn = findViewById(R.id.button6);
         routeBtn = findViewById(R.id.button4);
-
+        addAdminUserBtn = findViewById(R.id.button5);
 
         busBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +41,14 @@ public class AdminHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AdminHomeActivity.this, AdminRouteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        addAdminUserBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminHomeActivity.this, AdminAdminUser.class);
                 startActivity(intent);
             }
         });

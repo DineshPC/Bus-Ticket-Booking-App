@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import com.example.busticketbookingapp.R;
 import com.google.firebase.database.DataSnapshot;
@@ -23,30 +23,30 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class AdminBusActivity extends AppCompatActivity {
-
-    Button addBusBtn;
+public class AdminAdminUser extends AppCompatActivity {
+    Button addAdminUserBtn;
     DatabaseReference routesReference;
     LinearLayout linearLayoutContainer;
     ValueEventListener valueEventListener;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_bus);
+        setContentView(R.layout.activity_admin_admin_user);
 
-        addBusBtn = findViewById(R.id.addBusButton);
-        routesReference = FirebaseDatabase.getInstance().getReference("Buses");
+        addAdminUserBtn = findViewById(R.id.addAdminUserButton);
 
+        routesReference = FirebaseDatabase.getInstance().getReference("users");
         linearLayoutContainer = findViewById(R.id.linear_layout_container);
 
-        addBusBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(AdminBusActivity.this, AdminAddBusActivity.class);
+
+        addAdminUserBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminAdminUser.this, AdminAddAdminUser.class);
             startActivity(intent);
         });
 
         readDataFromFirebase();
-
     }
 
     private void readDataFromFirebase() {
@@ -56,11 +56,16 @@ public class AdminBusActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 linearLayoutContainer.removeAllViews();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String routeName = snapshot.child("busPlateNumber").getValue(String.class);
-                    String sourceName = snapshot.child("source").getValue(String.class);
-                    String destinationName = snapshot.child("destination").getValue(String.class);
-                    String finalName = routeName + "\n" + sourceName + " --> " + destinationName ;
-                    addTextViewWithBorder(finalName);
+                    String role = snapshot.child("role").getValue(String.class);
+                    if (role != null && role.equals("admin")) {
+                        // If the role is 'admin', proceed with processing the snapshot
+                        String realName = snapshot.child("name").getValue(String.class);
+                        String userName = snapshot.child("username").getValue(String.class);
+                        String mobileNumber = snapshot.child("mobile_no").getValue(String.class);
+                        String email = snapshot.child("email").getValue(String.class);
+                        String finalName = "Name : " + realName + "\nUsername : " + userName + "\nEmail : " + email + "\nMobile Number : " + mobileNumber;
+                        addTextViewWithBorder(finalName);
+                    }
                 }
             }
 
@@ -92,18 +97,18 @@ public class AdminBusActivity extends AppCompatActivity {
         textView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                String platNumberFromText = extractPlatNumberFromText(text);
-                showDeleteDialog(platNumberFromText); // Show delete dialog when long click
+                String username = extractUsernameFromText(text); // Extract username from text
+                showDeleteDialog(username); // Show delete dialog when long click
                 return true;
             }
         });
         linearLayoutContainer.addView(textView);
     }
 
-    private String extractPlatNumberFromText(String text) {
-        String[] parts = text.split("\n"); // the platenumber is on the first line
-        if (parts.length > 0) {
-            return parts[0]; // the format is "platenumber"
+    private String extractUsernameFromText(String text) {
+        String[] parts = text.split("\n"); // the username is on the second line
+        if (parts.length > 1) {
+            return parts[1].split(" : ")[1]; // the format is "Username : username"
         }
         return ""; // Return empty string if username extraction fails
     }
@@ -128,14 +133,15 @@ public class AdminBusActivity extends AppCompatActivity {
     }
 
     private void deleteTextView(final String text) {
-        Query query = routesReference.orderByChild("busPlateNumber").equalTo(text);
+        Query query = routesReference.orderByChild("username").equalTo(text);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Iterate through the results and delete the node
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     snapshot.getRef().removeValue(); // Remove the node from Firebase
                 }
+                makeToast("Removed");
             }
 
             @Override
@@ -157,8 +163,25 @@ public class AdminBusActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Remove ValueEventListener to prevent memory leaks
+        if (valueEventListener != null) {
+            routesReference.removeEventListener(valueEventListener);
+        }
+    }
+
+    public void makeToast(String message){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         finish(); // Finish the current activity when leaving
     }
+
+
 }
