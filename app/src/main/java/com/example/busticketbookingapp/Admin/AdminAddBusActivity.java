@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -181,6 +182,8 @@ public class AdminAddBusActivity extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     // Data uploaded successfully
                     makeToast("Bus data uploaded successfully");
+                    Intent intent = new Intent(AdminAddBusActivity.this, AdminHomeActivity.class);
+                    startActivity(intent);
                 })
                 .addOnFailureListener(e -> {
                     // Error occurred while uploading data
