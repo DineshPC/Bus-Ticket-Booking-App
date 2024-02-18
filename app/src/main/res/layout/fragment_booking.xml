@@ -3,16 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.Booking_Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <TextView
-        android:id="@+id/textView"
+    <!-- ScrollView to enable scrolling -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="430dp"
-        android:textSize="35sp"
-        android:gravity="center"
-        android:text="TextView for Booking" />
+        android:layout_height="match_parent">
+
+        <!-- LinearLayout to hold options vertically -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="50dp"
+>
+
+            <!-- Source Input Field -->
+            <EditText
+                android:id="@+id/sourceEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/edit_text_shape"
+                android:hint="Enter source"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:textSize="16sp" />
+
+            <!-- Circular Button -->
+            <ImageButton
+                android:id="@+id/swapButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:background="@color/button_text_color"
+                android:src="@drawable/ic_swap_place"
+                android:textSize="48sp"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+            <!-- Destination Input Field -->
+            <EditText
+                android:id="@+id/destinationEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/edit_text_shape"
+                android:hint="Enter destination"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:textSize="16sp" />
+
+            <!-- Search Button -->
+            <Button
+                android:id="@+id/searchButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

@@ -6,11 +6,15 @@
         android:icon="@drawable/ic_booking"
         />
 
+    <item
+        android:title="Booked"
+        android:id="@+id/booked"
+        android:icon="@drawable/ic_booked"
+        />
 
     <item
         android:title="Settings"
         android:id="@+id/profile"
         android:icon="@drawable/ic_setting"
-
         />
 </menu>

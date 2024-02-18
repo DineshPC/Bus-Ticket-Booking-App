@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.busticketbookingapp.Fragment.Booking_Fragment;
+import com.example.busticketbookingapp.Fragment.Booked_Fragment;
 import com.example.busticketbookingapp.Fragment.Profile_Fragment;
 import com.example.busticketbookingapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,6 +32,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
         if (itemId == R.id.dashbord) {
             fragment = new Booking_Fragment();
+        } else if (itemId == R.id.booked) {
+            fragment = new Booked_Fragment();
         } else if (itemId == R.id.profile) {
             fragment = new Profile_Fragment();
         }

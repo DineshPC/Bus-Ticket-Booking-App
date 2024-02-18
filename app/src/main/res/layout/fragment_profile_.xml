@@ -6,14 +6,155 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.Profile_Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <TextView
-        android:id="@+id/textView"
+    <!-- ScrollView to enable scrolling -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="430dp"
-        android:textSize="35sp"
-        android:gravity="center"
-        android:text="TextView for settings"
-        android:background="#123123"/>
+        android:layout_height="match_parent">
+
+        <!-- LinearLayout to hold options vertically -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#ffff00">
+
+            <!-- Option 1 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 1"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <!-- Option 2 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 2"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <!-- Option 3 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 3"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <!-- Option 4 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 4"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <!-- Option 5 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 5"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 10"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>
