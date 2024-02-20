@@ -153,11 +153,11 @@ public class AdminAddBusActivity extends AppCompatActivity {
             timeBoxDataList.add(new TimeBoxData(startTime, endTime, direction));
         }
 
-        // Create a new Bus object with the retrieved values
+        // Create a new BusSearch object with the retrieved values
         Bus bus = new Bus(busNumber, busPlateNumber, numberOfSeats, source, destination, selectedRoutes, minimumFare, intermediateFare, maximumFare, timeBoxDataList);
 
 
-        // Upload the Bus object to the database
+        // Upload the BusSearch object to the database
         uploadBusToDatabase(bus);
     }
 
@@ -173,7 +173,7 @@ public class AdminAddBusActivity extends AppCompatActivity {
         }
 
         // Set the bus data including timeBoxDataList
-        bus.setTimeBoxDataList(null); // Exclude timeBoxDataList from Bus object
+        bus.setTimeBoxDataList(null); // Exclude timeBoxDataList from BusSearch object
         Map<String, Object> busValues = bus.toMap();
         busValues.put("timeBoxDataList", timeBoxDataMap);
 
@@ -181,7 +181,7 @@ public class AdminAddBusActivity extends AppCompatActivity {
         busesReference.child(busId).setValue(busValues)
                 .addOnSuccessListener(aVoid -> {
                     // Data uploaded successfully
-                    makeToast("Bus data uploaded successfully");
+                    makeToast("BusSearch data uploaded successfully");
                     Intent intent = new Intent(AdminAddBusActivity.this, AdminHomeActivity.class);
                     startActivity(intent);
                 })
@@ -199,10 +199,10 @@ public class AdminAddBusActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Bus with the same ID already exists
-                    makeToast("Bus with plate number " + busId + " already exists.");
+                    // BusSearch with the same ID already exists
+                    makeToast("BusSearch with plate number " + busId + " already exists.");
                 } else {
-                    // Bus does not exist, proceed with adding the bus
+                    // BusSearch does not exist, proceed with adding the bus
                     uploadBusData();
                 }
             }
@@ -251,7 +251,7 @@ public class AdminAddBusActivity extends AppCompatActivity {
             if (busNumber.length()<7){
                 return true;
             }else{
-                makeToast("Bus number length must be between 1-6 characters");
+                makeToast("BusSearch number length must be between 1-6 characters");
             }
         }else{
             makeToast("Please enter a bus number (eg. 100, A370)");
@@ -265,7 +265,7 @@ public class AdminAddBusActivity extends AppCompatActivity {
             makeToast("Please enter a bus plate number (eg. MH04AB1001)");
             return false;
         }else if (busPlateNumber.length()!=10){
-            makeToast("Bus plate number must be 10 characters");
+            makeToast("BusSearch plate number must be 10 characters");
             return false;
         }
         return true;

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Admin.AdminAddRouteActivity">
 
-    <!-- Bus Number EditText -->
+    <!-- BusSearch Number EditText -->
     <EditText
         android:id="@+id/routeNameEditText"
         android:layout_width="0dp"

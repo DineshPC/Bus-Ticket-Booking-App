@@ -1,69 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.Booking_Fragment">
+    android:orientation="vertical">
 
-    <!-- ScrollView to enable scrolling -->
-    <ScrollView
+    <!-- LinearLayout to hold options vertically -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_marginTop="25dp">
 
-        <!-- LinearLayout to hold options vertically -->
-        <LinearLayout
+        <!-- Source Input Field -->
+        <AutoCompleteTextView
+            android:id="@+id/sourceAutoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="50dp"
->
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_shape"
+            android:hint="Enter source"
+            android:minHeight="48dp"
+            android:padding="12dp"
+            android:textSize="16sp" />
 
-            <!-- Source Input Field -->
-            <EditText
-                android:id="@+id/sourceEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/edit_text_shape"
-                android:hint="Enter source"
-                android:minHeight="48dp"
-                android:padding="12dp"
-                android:textSize="16sp" />
+        <!-- Circular Button -->
+        <ImageButton
+            android:id="@+id/swapButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:background="@color/button_text_color"
+            android:src="@drawable/ic_swap_place"
+            android:textSize="48sp"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-            <!-- Circular Button -->
-            <ImageButton
-                android:id="@+id/swapButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:clickable="true"
-                android:background="@color/button_text_color"
-                android:src="@drawable/ic_swap_place"
-                android:textSize="48sp"
-                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+        <!-- Destination Input Field -->
+        <AutoCompleteTextView
+            android:id="@+id/destinationAutoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_shape"
+            android:hint="Enter destination"
+            android:minHeight="48dp"
+            android:padding="12dp"
+            android:textSize="16sp" />
 
-            <!-- Destination Input Field -->
-            <EditText
-                android:id="@+id/destinationEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/edit_text_shape"
-                android:hint="Enter destination"
-                android:minHeight="48dp"
-                android:padding="12dp"
-                android:textSize="16sp" />
+        <!-- Search Button -->
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:textSize="16sp" />
 
-            <!-- Search Button -->
-            <Button
-                android:id="@+id/searchButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Search"
-                android:textSize="16sp" />
+    </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
-</FrameLayout>
+    <!-- Output Text Field -->
+    <TextView
+        android:id="@+id/outputTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/textview_border"
+        android:gravity="center_horizontal"
+        android:padding="16dp"
+        android:text="Output"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16sp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- FrameLayout for fragment container -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

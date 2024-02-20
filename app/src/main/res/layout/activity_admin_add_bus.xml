@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Bus Number EditText -->
+        <!-- BusSearch Number EditText -->
         <EditText
             android:id="@+id/busNumberEditText"
             android:layout_width="0dp"
@@ -31,7 +31,7 @@
             android:layout_marginTop="16dp" />
 
 
-        <!-- Bus Plate Number EditText -->
+        <!-- BusSearch Plate Number EditText -->
         <EditText
             android:id="@+id/busPlateNumberEditText"
             android:layout_width="0dp"
@@ -236,7 +236,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp" />
 
-        <!-- Bus Time TextView -->
+        <!-- BusSearch Time TextView -->
         <TextView
             android:id="@+id/busTimeTextView"
             android:layout_width="wrap_content"
@@ -365,7 +365,7 @@
 
 
 
-        <!-- Add Bus Button -->
+        <!-- Add BusSearch Button -->
 
         <LinearLayout
             android:layout_width="match_parent"

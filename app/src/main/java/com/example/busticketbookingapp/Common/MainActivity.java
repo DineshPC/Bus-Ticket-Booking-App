@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -99,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if (Objects.equals(passwordFromDB, userPassword)) {
+                        SharedPreferences.Editor editor = getSharedPreferences("getUsernameFromPrefrence", MODE_PRIVATE).edit();
+                        editor.putString("username", userUsername);
+                        editor.apply();
                         if (Objects.equals(roleFromDB, "admin")) {
                             Intent intent = new Intent(MainActivity.this, AdminHomeActivity.class);
                             startActivity(intent);

@@ -1,5 +1,6 @@
 package com.example.busticketbookingapp.Fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.busticketbookingapp.R;
 
@@ -16,6 +18,8 @@ import com.example.busticketbookingapp.R;
  * create an instance of this fragment.
  */
 public class Profile_Fragment extends Fragment {
+    private TextView usernameTextView;
+    private SharedPreferences prefs;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,9 +62,16 @@ public class Profile_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_profile_, container, false);
+        usernameTextView = rootView.findViewById(R.id.userNameTextView);
+
+        prefs = requireContext().getSharedPreferences("getUsernameFromPrefrence", requireContext().MODE_PRIVATE);
+        String username = prefs.getString("username", "");
+
+        usernameTextView.setText("Username : " + username);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_, container, false);
+        return rootView;
     }
 }
