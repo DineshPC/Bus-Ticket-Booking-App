@@ -7,7 +7,7 @@ import java.util.Map;
 public class Bus {
     private String busNumber;
     private String busPlateNumber;
-    private int numberOfSeats;
+    private int numberOfSeats, availableSeats;
     private String source;
     private String destination;
     private List<String> selectedRoutes;
@@ -19,7 +19,7 @@ public class Bus {
 
 
     // Constructor
-    public Bus(String busNumber, String busPlateNumber, int numberOfSeats, String source, String destination,
+    public Bus(String busNumber, String busPlateNumber, int numberOfSeats, int availableSeats, String source, String destination,
                List<String> selectedRoutes, double minimumFare, double intermediateFare, double maximumFare, List<TimeBoxData> timeBoxDataList) {
         this.busNumber = busNumber;
         this.busPlateNumber = busPlateNumber;
@@ -31,6 +31,7 @@ public class Bus {
         this.intermediateFare = intermediateFare;
         this.maximumFare = maximumFare;
         this.timeBoxDataList = timeBoxDataList;
+        this.availableSeats = availableSeats;
     }
 
     // Getters and setters
@@ -57,6 +58,10 @@ public class Bus {
     public void setNumberOfSeats(int numberOfSeats) {
         this.numberOfSeats = numberOfSeats;
     }
+
+    public int getAvailableSeats() { return availableSeats; }
+
+    public void setAvailableSeats(int availableSeats) { this.availableSeats = availableSeats; }
 
     public String getSource() {
         return source;
@@ -120,6 +125,7 @@ public class Bus {
         result.put("busNumber", busNumber);
         result.put("busPlateNumber", busPlateNumber);
         result.put("numberOfSeats", numberOfSeats);
+        result.put("availableSeats", availableSeats);
         result.put("source", source);
         result.put("destination", destination);
         result.put("selectedRoutes", selectedRoutes);

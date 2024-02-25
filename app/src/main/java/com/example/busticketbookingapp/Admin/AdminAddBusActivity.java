@@ -130,6 +130,7 @@ public class AdminAddBusActivity extends AppCompatActivity {
         String busNumber = busNumberEditText.getText().toString();
         String busPlateNumber = busPlateNumberEditText.getText().toString().toUpperCase();
         int numberOfSeats = Integer.parseInt(numberOfSeatsInBus.getText().toString());
+        int availableSeats = numberOfSeats;
         String source = sourceEditText.getText().toString();
         String destination = destinationEditText.getText().toString();
 
@@ -154,7 +155,7 @@ public class AdminAddBusActivity extends AppCompatActivity {
         }
 
         // Create a new BusSearch object with the retrieved values
-        Bus bus = new Bus(busNumber, busPlateNumber, numberOfSeats, source, destination, selectedRoutes, minimumFare, intermediateFare, maximumFare, timeBoxDataList);
+        Bus bus = new Bus(busNumber, busPlateNumber, numberOfSeats, availableSeats , source, destination, selectedRoutes, minimumFare, intermediateFare, maximumFare, timeBoxDataList);
 
 
         // Upload the BusSearch object to the database
