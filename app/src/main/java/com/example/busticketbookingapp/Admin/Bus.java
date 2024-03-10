@@ -17,7 +17,6 @@ public class Bus {
     private double maximumFare;
 
 
-
     // Constructor
     public Bus(String busNumber, String busPlateNumber, int numberOfSeats, int availableSeats, String source, String destination,
                List<String> selectedRoutes, double minimumFare, double intermediateFare, double maximumFare, List<TimeBoxData> timeBoxDataList) {
@@ -132,8 +131,8 @@ public class Bus {
         result.put("minimumFare", minimumFare);
         result.put("intermediateFare", intermediateFare);
         result.put("maximumFare", maximumFare);
-        // You can include other fields as needed
-
+        String lastTicketBookingTime = "";
+        result.put("lastTicketBookingTime", lastTicketBookingTime);
         return result;
     }
 }
