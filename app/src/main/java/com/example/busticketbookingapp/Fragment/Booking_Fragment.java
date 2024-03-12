@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.example.busticketbookingapp.Common.BusSearchClass;
 import com.example.busticketbookingapp.Common.SearchHandler;
 import com.example.busticketbookingapp.R;
+import com.example.busticketbookingapp.User.BusSearchResultActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,7 +45,7 @@ public class Booking_Fragment extends Fragment {
     FragmentManager fragmentManager;
 
     DatabaseReference placesRef;
-    private String selectedSource, selectedDestination;
+    public String selectedSource, selectedDestination;
 
 
 
@@ -122,11 +125,21 @@ public class Booking_Fragment extends Fragment {
             if (selectedSource != null && selectedDestination != null) {
                 // Perform search
                 if (!selectedSource.equals(selectedDestination)) {
+
+                    SharedPreferences preferences = requireActivity().getSharedPreferences("MY_PREFERENCES", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("SOURCE_NAME", selectedSource);
+                    editor.putString("DESTINATION_NAME", selectedDestination);
+                    editor.apply();
+
+
                     SearchHandler searchHandler = new SearchHandler();
                     searchHandler.performSearch(selectedSource, selectedDestination, new SearchHandler.OnSearchCompleteListener() {
                         @Override
                         public void onSearchComplete(List<BusSearchClass> busList) {
                             Toast.makeText(requireContext(), "Found " + busList.size() + " buses", Toast.LENGTH_SHORT).show();
+
+
 
                             // Get the FragmentManager from the parent activity
                             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -145,6 +158,7 @@ public class Booking_Fragment extends Fragment {
                             fragmentTransaction.replace(R.id.fragment_container, busListFragment)
                                     .commit();
                         }
+
                     });
                 } else {
                     Toast.makeText(requireContext(), "Source and destination cannot be the same", Toast.LENGTH_SHORT).show();

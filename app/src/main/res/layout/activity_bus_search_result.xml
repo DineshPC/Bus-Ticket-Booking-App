@@ -35,6 +35,20 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewBusPlateNumber" />
 
     <TextView
+        android:id="@+id/textViewTravelDirection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text=""
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBusNumber" />
+
+    <TextView
         android:id="@+id/textViewAvailableSeat"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -46,7 +60,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewBusNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTravelDirection" />
 
     <TextView
         android:id="@+id/textView3"

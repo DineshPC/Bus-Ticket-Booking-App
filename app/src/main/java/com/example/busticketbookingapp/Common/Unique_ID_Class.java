@@ -37,4 +37,32 @@ public class Unique_ID_Class {
         return future;
     }
 
+
+    public CompletableFuture<String> getUniqueIDOfTicket() {
+        CompletableFuture<String> future = new CompletableFuture<>();
+
+        reference.child("ticketLastId").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Integer ticketLastID = dataSnapshot.getValue(Integer.class);
+                    Integer temp = ticketLastID + 1;
+                    String uniqueID = "TID" + String.format("%06d", temp);
+
+                    reference.child("ticketLastId").setValue(temp);
+
+                    future.complete(uniqueID);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("Database Error: " + databaseError.getMessage());
+                future.completeExceptionally(databaseError.toException());
+            }
+        });
+
+        return future;
+    }
+
 }
