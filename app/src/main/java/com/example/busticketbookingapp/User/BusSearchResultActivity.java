@@ -42,7 +42,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
     private String busPlateNumber = null;
     private String busNumber = "";
 
-    TextView plateNumberTextView, busNumberTextView, busSeatTextView, busSourceAndDestinationTextView;
+    TextView plateNumberTextView, busNumberTextView, busSeatTextView, busSourceAndDestinationTextView, userSourceAndDestinationTextView;
     Button bookBusBtn;
     RadioGroup radioGroup;
     DatabaseReference busesRef;
@@ -68,6 +68,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
         plateNumberTextView = findViewById(R.id.textViewBusPlateNumber);
         busNumberTextView = findViewById(R.id.textViewBusNumber);
         busSeatTextView = findViewById(R.id.textViewAvailableSeat);
+        userSourceAndDestinationTextView = findViewById(R.id.textViewUserSourceAndDestination);
         bookBusBtn = findViewById(R.id.buttonBookTicket);
         radioGroup = findViewById(R.id.radioGroupNumberOfPassengers);
         busSourceAndDestinationTextView = findViewById(R.id.textViewTravelDirection);
@@ -76,8 +77,11 @@ public class BusSearchResultActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("MY_PREFERENCES", Context.MODE_PRIVATE);
         userSourceName = preferences.getString("SOURCE_NAME", "");
         userDestinationName = preferences.getString("DESTINATION_NAME", "");
+
         SharedPreferences prefs = getSharedPreferences("getUsernameFromPrefrence", Context.MODE_PRIVATE);
         username = prefs.getString("username", "");
+        userSourceAndDestinationTextView.setText("User Source : " + userSourceName + "\nUser Destination : " + userDestinationName);
+
 
         if (intent.hasExtra("BUS_PLATE_NUMBER") && intent.hasExtra("BUS_NUMBER")) {
             busPlateNumber = intent.getStringExtra("BUS_PLATE_NUMBER");
@@ -146,8 +150,69 @@ public class BusSearchResultActivity extends AppCompatActivity {
         reference.child(UID).child("busPlateNumber").setValue(busPlateNumber);
         reference.child(UID).child("ticketIsCheckByDriver").setValue(false);
         removeNoOfPassengersFromBus(noOfPassengers,busPlateNumber);
-
+        addTicketReceiptToUser(username, UID);
     }
+
+    private void addTicketReceiptToUser(String username, String uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+        Query checkUserDatabase = reference.orderByChild("username").equalTo(username);
+        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                        if (userSnapshot.hasChild("ticketsBookByUser")) {
+                            // "ticketsBookByUser" field exists
+                            DatabaseReference ticketsReference = userSnapshot.child("ticketsBookByUser").getRef();
+                            addTicketToUser(ticketsReference, uid);
+                        } else {
+                            // "ticketsBookByUser" field doesn't exist, add it and then add the ticket
+                            DatabaseReference ticketsReference = userSnapshot.getRef().child("ticketsBookByUser");
+                            ticketsReference.setValue("");
+                            addTicketToUser(ticketsReference, uid);
+                        }
+                    }
+                } else {
+                    // Handle the case where the user does not exist
+                    makeToast("Error in adding ticket to user: User not found");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle onCancelled
+            }
+        });
+    }
+
+    private void addTicketToUser(DatabaseReference ticketsReference, String uid) {
+        // Find the highest ticket index
+        ticketsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int highestTicketIndex = -1;
+                for (DataSnapshot ticketSnapshot : dataSnapshot.getChildren()) {
+                    String ticketKey = ticketSnapshot.getKey();
+                    if (ticketKey != null && ticketKey.startsWith("ticket_")) {
+                        int index = Integer.parseInt(ticketKey.substring(7)); // Extract index from key
+                        if (index > highestTicketIndex) {
+                            highestTicketIndex = index;
+                        }
+                    }
+                }
+
+                // Set the new ticket at the next available index
+                int nextTicketIndex = highestTicketIndex + 1;
+                ticketsReference.child("ticket_" + nextTicketIndex).setValue(uid);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle onCancelled
+            }
+        });
+    }
+
 
     private void removeNoOfPassengersFromBus(int noOfPassengers, String busPlateNumber) {
         DatabaseReference removeNoOfPassengerReference = FirebaseDatabase.getInstance().getReference("Buses").child(busPlateNumber);
@@ -197,7 +262,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
                         busSourceName = busDestinationName;
                         busDestinationName = temp;
                     }
-                    busSourceAndDestinationTextView.setText("Source : " + busSourceName + " \nDestination : " + busDestinationName);
+                    busSourceAndDestinationTextView.setText("Bus Source : " + busSourceName + " \nBus Destination : " + busDestinationName);
                 } else {
                     makeToast("Error: Bus not found");
                 }
@@ -240,7 +305,8 @@ public class BusSearchResultActivity extends AppCompatActivity {
                                 String busNumber = busSnapshot.child("busNumber").getValue(String.class);
                                 String busPlateNumber = busSnapshot.child("busPlateNumber").getValue(String.class);
                                 Toast.makeText(BusSearchResultActivity.this, "Bus " + busNumber + " (" + busPlateNumber + ") is available.", Toast.LENGTH_SHORT).show();
-                                getAvailableSeats(busPlateNumber);
+                                updateBusAvailableSeatFromLastTicketBookingTime();
+//                                getAvailableSeats(busPlateNumber);
                                 getBusSourceAndDestination();
                                 return;
                             }
@@ -261,8 +327,8 @@ public class BusSearchResultActivity extends AppCompatActivity {
 
     public void getAvailableSeats(String busPlateNumber){
         busesRef = FirebaseDatabase.getInstance().getReference().child("Buses").child(busPlateNumber);
-        updateBusAvailableSeatFromLastTicketBookingTime();
-        // Using searchBusPlateNumber instead of busPlateNumber inside the listener
+//        updateBusAvailableSeatFromLastTicketBookingTime();
+
         busesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -367,6 +433,8 @@ public class BusSearchResultActivity extends AppCompatActivity {
                 setAvailableSeatsFromTotalNumberOfSeats(busPlateNumber);
             } else if (busStartTimeInInteger>HoursAndMinutesFromLastTicketBookingTimeFromDatabaseInInteger || HoursAndMinutesFromLastTicketBookingTimeFromDatabaseInInteger>busEndTimeInInteger){
                 setAvailableSeatsFromTotalNumberOfSeats(busPlateNumber);
+            }else{
+                getAvailableSeats(busPlateNumber);
             }
         }
     }
@@ -386,6 +454,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
                     Log.d("Seats","new seats" + numberOfSeats);
                     // Update the availableSeats to match the numberOfSeats
                     busRef.child("availableSeats").setValue(numberOfSeats);
+                    getAvailableSeats(busPlateNumber);
                 } else {
                     makeToast("No bus found with plate number: " + plateNumber);
                 }
