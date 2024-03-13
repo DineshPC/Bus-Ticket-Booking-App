@@ -6,13 +6,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.Booked_Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/textView"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:text="TextView for Booked Tickets" />
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toTopOf="@+id/addRouteButton"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"/>
+
+    </ScrollView>
+
 </FrameLayout>
