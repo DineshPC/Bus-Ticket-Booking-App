@@ -30,7 +30,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -42,19 +45,20 @@ public class BusSearchResultActivity extends AppCompatActivity {
     private String busPlateNumber = null;
     private String busNumber = "";
 
-    TextView plateNumberTextView, busNumberTextView, busSeatTextView, busSourceAndDestinationTextView, userSourceAndDestinationTextView;
+    TextView plateNumberTextView, busNumberTextView, busSeatTextView, busSourceAndDestinationTextView, userSourceAndDestinationTextView, busStopTextView;
     Button bookBusBtn;
     RadioGroup radioGroup;
     DatabaseReference busesRef;
     String busStartTime , busEndTime ;
+    int busStartTimeInInteger , busEndTimeInInteger;
     String lastTicketBookingTimeFromDatabase;
     String currentTimeWithAllData = getCurrentTime();
     String noOfPassengersString = "1";
     String busTravelDirection = "";
     String userSourceName, userDestinationName, username;
-    int busStartTimeInInteger;
-    int busEndTimeInInteger;
+    List<String> selectedRoutes = new ArrayList<>();
     int currentTimeWithHourAndMinuteInInteger;
+
 
 
 
@@ -72,6 +76,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
         bookBusBtn = findViewById(R.id.buttonBookTicket);
         radioGroup = findViewById(R.id.radioGroupNumberOfPassengers);
         busSourceAndDestinationTextView = findViewById(R.id.textViewTravelDirection);
+        busStopTextView = findViewById(R.id.textViewBusStops);
         bookBusBtn.setEnabled(false);
 
         SharedPreferences preferences = getSharedPreferences("MY_PREFERENCES", Context.MODE_PRIVATE);
@@ -308,6 +313,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
                                 updateBusAvailableSeatFromLastTicketBookingTime();
 //                                getAvailableSeats(busPlateNumber);
                                 getBusSourceAndDestination();
+                                getBusStatus(plateNumber);
                                 return;
                             }
                         }
@@ -323,6 +329,53 @@ public class BusSearchResultActivity extends AppCompatActivity {
                 Toast.makeText(BusSearchResultActivity.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void getBusStatus(String plateNumber) {
+        DatabaseReference busesStatusRef = FirebaseDatabase.getInstance().getReference("Buses");
+        Query query = busesStatusRef.orderByChild("busPlateNumber").equalTo(plateNumber);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    for (DataSnapshot routeSnapshot : snapshot.child("selectedRoutes").getChildren()) {
+                        String route = routeSnapshot.getValue(String.class);
+                        selectedRoutes.add(route);
+                        Log.d("selectedRoutes", "Routes : " + selectedRoutes.size() + route);
+                    }
+                    if (busTravelDirection.equals("Destination to Source")){
+                        Collections.reverse(selectedRoutes);
+                    }
+                    String temp = "Bus Stops (Travel in Up-to-Down Direction)";
+                    String temp2 = "";
+                    for (String route : selectedRoutes) {
+                        temp2 = temp2 + "\n-> " + route;
+                    }
+                    busStopTextView.setText(temp + temp2);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void checkBusDirectionMatchWithUserDestination(List<String> selectedRoutes, String source, String destination) {
+        int sourceIndex = selectedRoutes.indexOf(source);
+        int destinationIndex = selectedRoutes.indexOf(destination);
+        int indexDifference = destinationIndex - sourceIndex;
+
+        // Check if the index difference is negative
+        if (indexDifference > 0) {
+            makeToast("Bus Travel in same direction as User");
+            Log.d("test" , "user travel in same direction as bus");
+        } else {
+            makeToast("Bus Travel in opposite direction from User");
+            Log.d("test" , "user travel in different direction as bus");
+            bookBusBtn.setEnabled(false);
+        }
     }
 
     public void getAvailableSeats(String busPlateNumber){
@@ -356,12 +409,15 @@ public class BusSearchResultActivity extends AppCompatActivity {
                             // For example, enable/disable a button based on the selection
                             if (availableSeat >= selectedTextInt) {
                                 bookBusBtn.setEnabled(true);
+                                checkBusDirectionMatchWithUserDestination(selectedRoutes, userSourceName, userDestinationName);
+
                             } else {
                                 bookBusBtn.setEnabled(false);
+                                checkBusDirectionMatchWithUserDestination(selectedRoutes, userSourceName, userDestinationName);
                             }
                         }
                     });
-
+                   checkBusDirectionMatchWithUserDestination(selectedRoutes, userSourceName, userDestinationName);
                 } else {
                     Toast.makeText(BusSearchResultActivity.this, "No data found for the bus plate number", Toast.LENGTH_SHORT).show();
                 }
