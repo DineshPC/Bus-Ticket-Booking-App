@@ -135,6 +135,7 @@ public class Booked_Fragment extends Fragment {
     private void getTicketData(String ticketId) {
         DatabaseReference ticketsReference = FirebaseDatabase.getInstance().getReference("tickets").child(ticketId);
         ticketsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -142,6 +143,8 @@ public class Booked_Fragment extends Fragment {
                     String busPlateNumber = dataSnapshot.child("busPlateNumber").getValue(String.class);
                     String noOfPassenger = dataSnapshot.child("noOfPassengers").getValue(Long.class).toString();
                     Boolean ticketIsCheckByDriver = dataSnapshot.child("ticketIsCheckByDriver").getValue(Boolean.class);
+                    String ticketIsCheckWhichDriver = dataSnapshot.child("ticketIsCheckByWhichDriver").getValue(String.class);
+                    String ticketBookingTime = dataSnapshot.child("ticketBookingTime").getValue(String.class);
                     String userSourceName = dataSnapshot.child("userSourceName").getValue(String.class);
                     String userDestinationName = dataSnapshot.child("userDestinationName").getValue(String.class);
                     String ticket_id = dataSnapshot.child("ID").getValue(String.class);
@@ -149,9 +152,11 @@ public class Booked_Fragment extends Fragment {
 
                     TextView textView = new TextView(getContext());
 
-                    textView.setText("Bus Plate No.: "+busPlateNumber +
+                    textView.setText("Ticket Booking Time : " + ticketBookingTime +
+                            "\nBus Plate No.: "+busPlateNumber +
                             "\nNo. of Passenger : "+noOfPassenger +
-                            "\nTicket Check by driver : "+ ticketIsCheckByDriver+
+                            "\nTicket is Check by driver : "+ ticketIsCheckByDriver+
+                            "\nTicket is Check by which driver : " + ticketIsCheckWhichDriver+
                             "\nFrom : "+userSourceName +
                             "\nTo : "+ userDestinationName);
 

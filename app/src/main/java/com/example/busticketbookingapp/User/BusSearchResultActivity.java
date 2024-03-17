@@ -16,10 +16,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.busticketbookingapp.Admin.AdminAddRouteActivity;
-import com.example.busticketbookingapp.Admin.AdminHomeActivity;
-import com.example.busticketbookingapp.Admin.AdminRouteActivity;
-import com.example.busticketbookingapp.Common.MainActivity;
 import com.example.busticketbookingapp.Common.Unique_ID_Class;
 import com.example.busticketbookingapp.R;
 import com.google.firebase.database.DataSnapshot;
@@ -35,17 +31,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Semaphore;
 
 public class BusSearchResultActivity extends AppCompatActivity {
 
     private String busPlateNumber = null;
     private String busNumber = "";
 
-    TextView plateNumberTextView, busNumberTextView, busSeatTextView, busSourceAndDestinationTextView, userSourceAndDestinationTextView, busStopTextView;
+    TextView plateNumberTextView, busNumberTextView, busSeatTextView, busSourceAndDestinationTextView, userSourceAndDestinationTextView, busStopTextView, busStatusTextView;
     Button bookBusBtn;
     RadioGroup radioGroup;
     DatabaseReference busesRef;
@@ -77,6 +70,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
         radioGroup = findViewById(R.id.radioGroupNumberOfPassengers);
         busSourceAndDestinationTextView = findViewById(R.id.textViewTravelDirection);
         busStopTextView = findViewById(R.id.textViewBusStops);
+        busStatusTextView = findViewById(R.id.textViewBusStatus);
         bookBusBtn.setEnabled(false);
 
         SharedPreferences preferences = getSharedPreferences("MY_PREFERENCES", Context.MODE_PRIVATE);
@@ -146,6 +140,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
     }
 
     public void addTicket(String UID, int noOfPassengers, String busPlateNumber ,String userSourceName, String userDestinationName, String username){
+        String currentTimeWithAllData = getCurrentTime();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("tickets");
         reference.child(UID).child("ID").setValue(UID);
         reference.child(UID).child("noOfPassengers").setValue(noOfPassengers);
@@ -154,6 +149,9 @@ public class BusSearchResultActivity extends AppCompatActivity {
         reference.child(UID).child("bookedByUser").setValue(username);
         reference.child(UID).child("busPlateNumber").setValue(busPlateNumber);
         reference.child(UID).child("ticketIsCheckByDriver").setValue(false);
+        reference.child(UID).child("ticketCheckTime").setValue("");
+        reference.child(UID).child("ticketIsCheckByWhichDriver").setValue("");
+        reference.child(UID).child("ticketBookingTime").setValue(currentTimeWithAllData);
         removeNoOfPassengersFromBus(noOfPassengers,busPlateNumber);
         addTicketReceiptToUser(username, UID);
     }
@@ -313,7 +311,8 @@ public class BusSearchResultActivity extends AppCompatActivity {
                                 updateBusAvailableSeatFromLastTicketBookingTime();
 //                                getAvailableSeats(busPlateNumber);
                                 getBusSourceAndDestination();
-                                getBusStatus(plateNumber);
+                                getBusStops(plateNumber);
+
                                 return;
                             }
                         }
@@ -331,7 +330,56 @@ public class BusSearchResultActivity extends AppCompatActivity {
         });
     }
 
-    private void getBusStatus(String plateNumber) {
+    private void getBusStatus(List<String> selectedRoutes) {
+        Date currentTime = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("HHmm", Locale.getDefault());
+        String currentTimeWithHourAndMinute = sdf.format(currentTime);
+
+        busStartTimeInInteger = Integer.parseInt(busStartTime);
+        busEndTimeInInteger = Integer.parseInt(busEndTime);
+        currentTimeWithHourAndMinuteInInteger = Integer.parseInt(currentTimeWithHourAndMinute);
+
+        // Extract hours and minutes from startTime and endTime
+        int startHours = busStartTimeInInteger / 100; // Extracting hours (10)
+        int startMinutes = busStartTimeInInteger % 100; // Extracting minutes (0)
+        int endHours = busEndTimeInInteger / 100; // Extracting hours (11)
+        int endMinutes = busEndTimeInInteger % 100; // Extracting minutes (0)
+        int userHours = currentTimeWithHourAndMinuteInInteger / 100;
+        int userMinutes = currentTimeWithHourAndMinuteInInteger % 100;
+
+        // Convert start and end times into total minutes
+        int totalStartMinutes = startHours * 60 + startMinutes;
+        int totalEndMinutes = endHours * 60 + endMinutes;
+        int totalUserMinutes = userHours * 60 + userMinutes;
+
+        // Calculate the difference in minutes
+        int minutesDifferenceBetweenBusStartAndEndTime = totalEndMinutes - totalStartMinutes;
+        int minutesDifferenceBetweenBusStartAndUserTime = totalUserMinutes - totalStartMinutes;
+        int noOfStops = selectedRoutes.size(); // 8
+
+        float timeTakenForReachingEachStop = (float) minutesDifferenceBetweenBusStartAndEndTime / (noOfStops - 1);
+        float noOfStopCompletedInFloat = (float) minutesDifferenceBetweenBusStartAndUserTime / timeTakenForReachingEachStop;
+
+        timeTakenForReachingEachStop = Math.round(timeTakenForReachingEachStop * 10) / 10.0f;
+        int noOfStopCompleted = (int) (Math.round(noOfStopCompletedInFloat * 10) / 10.0f);
+
+        int noOfStopCompletedDeparted = (int) ( noOfStopCompleted );
+
+        int lastDepartedTime = (int) ((noOfStopCompletedInFloat % 1) * timeTakenForReachingEachStop);
+        int busArrivingTime = (int) (timeTakenForReachingEachStop - lastDepartedTime);
+
+
+        String busDepartedFrom = selectedRoutes.get(noOfStopCompletedDeparted-1);
+        String busArrivingAt = selectedRoutes.get(noOfStopCompletedDeparted);
+
+        String busStatus = "Departed from - " + busDepartedFrom + " ( " + lastDepartedTime + " minutes ago )"+
+                            "\nArriving At - " + busArrivingAt + " ( in " + busArrivingTime + " minutes )";
+
+        busStatusTextView.setText(busStatus);
+
+    }
+
+    private void getBusStops(String plateNumber) {
         DatabaseReference busesStatusRef = FirebaseDatabase.getInstance().getReference("Buses");
         Query query = busesStatusRef.orderByChild("busPlateNumber").equalTo(plateNumber);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -352,6 +400,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
                         temp2 = temp2 + "\n-> " + route;
                     }
                     busStopTextView.setText(temp + temp2);
+                    getBusStatus(selectedRoutes);
                 }
             }
 
@@ -432,9 +481,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
 
     public void updateBusAvailableSeatFromLastTicketBookingTime() {
         Date currentTime = new Date();
-
         SimpleDateFormat sdf = new SimpleDateFormat("HHmm", Locale.getDefault());
-
         String currentTimeWithHourAndMinute = sdf.format(currentTime);
 
         busStartTimeInInteger = Integer.parseInt(busStartTime);
