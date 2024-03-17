@@ -56,7 +56,7 @@ public class AdminAddAdminUser extends AppCompatActivity {
                 String mobile_number = signUpMobile_no.getText().toString();
                 String role = "admin";
 
-                // Validation logic
+                
                 if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirm_password) || TextUtils.isEmpty(mobile_number)) {
                     Toast.makeText(AdminAddAdminUser.this, "All fields must be filled", Toast.LENGTH_SHORT).show();
                     return;
@@ -81,10 +81,10 @@ public class AdminAddAdminUser extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            // Handle case when username already exists
+                            
                             Toast.makeText(AdminAddAdminUser.this, "Username already exists", Toast.LENGTH_SHORT).show();
                         } else {
-                            // All validations passed, proceed with registration
+                            
                             AdminUserClass adminUserClass = new AdminUserClass(name, email, username, password, confirm_password, mobile_number, role);
                             reference.child(username).setValue(adminUserClass);
 
@@ -108,6 +108,6 @@ public class AdminAddAdminUser extends AppCompatActivity {
 
     protected void onStop() {
         super.onStop();
-        finish(); // Finish the current activity when leaving
+        finish(); 
     }
 }

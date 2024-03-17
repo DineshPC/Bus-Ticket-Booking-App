@@ -92,7 +92,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
 
 
         } else {
-            // Handle the case where the intent does not contain the expected extra data
+            
             Toast.makeText(this, "No bus plate number found", Toast.LENGTH_SHORT).show();
         }
         bookBusBtn.setOnClickListener(new View.OnClickListener() {
@@ -165,31 +165,31 @@ public class BusSearchResultActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                         if (userSnapshot.hasChild("ticketsBookByUser")) {
-                            // "ticketsBookByUser" field exists
+                            
                             DatabaseReference ticketsReference = userSnapshot.child("ticketsBookByUser").getRef();
                             addTicketToUser(ticketsReference, uid);
                         } else {
-                            // "ticketsBookByUser" field doesn't exist, add it and then add the ticket
+                            
                             DatabaseReference ticketsReference = userSnapshot.getRef().child("ticketsBookByUser");
                             ticketsReference.setValue("");
                             addTicketToUser(ticketsReference, uid);
                         }
                     }
                 } else {
-                    // Handle the case where the user does not exist
+                    
                     makeToast("Error in adding ticket to user: User not found");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle onCancelled
+                
             }
         });
     }
 
     private void addTicketToUser(DatabaseReference ticketsReference, String uid) {
-        // Find the highest ticket index
+        
         ticketsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -197,21 +197,21 @@ public class BusSearchResultActivity extends AppCompatActivity {
                 for (DataSnapshot ticketSnapshot : dataSnapshot.getChildren()) {
                     String ticketKey = ticketSnapshot.getKey();
                     if (ticketKey != null && ticketKey.startsWith("ticket_")) {
-                        int index = Integer.parseInt(ticketKey.substring(7)); // Extract index from key
+                        int index = Integer.parseInt(ticketKey.substring(7)); 
                         if (index > highestTicketIndex) {
                             highestTicketIndex = index;
                         }
                     }
                 }
 
-                // Set the new ticket at the next available index
+                
                 int nextTicketIndex = highestTicketIndex + 1;
                 ticketsReference.child("ticket_" + nextTicketIndex).setValue(uid);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle onCancelled
+                
             }
         });
     }
@@ -254,7 +254,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    // Assuming only one result, no need to iterate
+                    
                     String busSourceName = snapshot.child("source").getValue(String.class);
                     String busDestinationName = snapshot.child("destination").getValue(String.class);
                     if (busTravelDirection.isEmpty()){
@@ -309,7 +309,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
                                 String busPlateNumber = busSnapshot.child("busPlateNumber").getValue(String.class);
                                 Toast.makeText(BusSearchResultActivity.this, "Bus " + busNumber + " (" + busPlateNumber + ") is available.", Toast.LENGTH_SHORT).show();
                                 updateBusAvailableSeatFromLastTicketBookingTime();
-//                                getAvailableSeats(busPlateNumber);
+
                                 getBusSourceAndDestination();
                                 getBusStops(plateNumber);
 
@@ -339,23 +339,23 @@ public class BusSearchResultActivity extends AppCompatActivity {
         busEndTimeInInteger = Integer.parseInt(busEndTime);
         currentTimeWithHourAndMinuteInInteger = Integer.parseInt(currentTimeWithHourAndMinute);
 
-        // Extract hours and minutes from startTime and endTime
-        int startHours = busStartTimeInInteger / 100; // Extracting hours (10)
-        int startMinutes = busStartTimeInInteger % 100; // Extracting minutes (0)
-        int endHours = busEndTimeInInteger / 100; // Extracting hours (11)
-        int endMinutes = busEndTimeInInteger % 100; // Extracting minutes (0)
+        
+        int startHours = busStartTimeInInteger / 100; 
+        int startMinutes = busStartTimeInInteger % 100; 
+        int endHours = busEndTimeInInteger / 100; 
+        int endMinutes = busEndTimeInInteger % 100; 
         int userHours = currentTimeWithHourAndMinuteInInteger / 100;
         int userMinutes = currentTimeWithHourAndMinuteInInteger % 100;
 
-        // Convert start and end times into total minutes
+        
         int totalStartMinutes = startHours * 60 + startMinutes;
         int totalEndMinutes = endHours * 60 + endMinutes;
         int totalUserMinutes = userHours * 60 + userMinutes;
 
-        // Calculate the difference in minutes
+        
         int minutesDifferenceBetweenBusStartAndEndTime = totalEndMinutes - totalStartMinutes;
         int minutesDifferenceBetweenBusStartAndUserTime = totalUserMinutes - totalStartMinutes;
-        int noOfStops = selectedRoutes.size(); // 8
+        int noOfStops = selectedRoutes.size(); 
 
         float timeTakenForReachingEachStop = (float) minutesDifferenceBetweenBusStartAndEndTime / (noOfStops - 1);
         float noOfStopCompletedInFloat = (float) minutesDifferenceBetweenBusStartAndUserTime / timeTakenForReachingEachStop;
@@ -416,7 +416,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
         int destinationIndex = selectedRoutes.indexOf(destination);
         int indexDifference = destinationIndex - sourceIndex;
 
-        // Check if the index difference is negative
+        
         if (indexDifference > 0) {
             makeToast("Bus Travel in same direction as User");
             Log.d("test" , "user travel in same direction as bus");
@@ -429,7 +429,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
 
     public void getAvailableSeats(String busPlateNumber){
         busesRef = FirebaseDatabase.getInstance().getReference().child("Buses").child(busPlateNumber);
-//        updateBusAvailableSeatFromLastTicketBookingTime();
+
 
         busesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
@@ -446,16 +446,16 @@ public class BusSearchResultActivity extends AppCompatActivity {
                     radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            // checkedId is the ID of the selected radio button
-                            // You can handle the click event here
+                            
+                            
 
                             RadioButton selectedRadioButton = findViewById(checkedId);
                             String selectedText = selectedRadioButton.getText().toString();
                             noOfPassengersString = selectedText;
                             int selectedTextInt = Integer.parseInt(selectedText);
 
-                            // Perform actions based on the selected radio button
-                            // For example, enable/disable a button based on the selection
+                            
+                            
                             if (availableSeat >= selectedTextInt) {
                                 bookBusBtn.setEnabled(true);
                                 checkBusDirectionMatchWithUserDestination(selectedRoutes, userSourceName, userDestinationName);
@@ -488,50 +488,50 @@ public class BusSearchResultActivity extends AppCompatActivity {
         busEndTimeInInteger = Integer.parseInt(busEndTime);
         currentTimeWithHourAndMinuteInInteger = Integer.parseInt(currentTimeWithHourAndMinute);
 
-        // Initiate the retrieval of lastTicketBookingTime
+        
         getLastTicketBookingTime(busPlateNumber, currentTimeWithAllData);
     }
 
     public void getLastTicketBookingTime(String plateNumber, String userCurrentTime) {
         busesRef = FirebaseDatabase.getInstance().getReference("Buses").child(plateNumber);
 
-        // Fetch last ticket booking time from the database
+        
         busesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String lastTicketBookingTimeFromDB = dataSnapshot.child("lastTicketBookingTime").getValue(String.class);
                 if (lastTicketBookingTimeFromDB == null || lastTicketBookingTimeFromDB.isEmpty()) {
-                    // If last booking time doesn't exist, add it and update variable
+                    
                     busesRef.child("lastTicketBookingTime").setValue("0000-00-00 00:00:00");
                 } else {
-                    // If last booking time exists, update variable
+                    
                     lastTicketBookingTimeFromDatabase = lastTicketBookingTimeFromDB;
                 }
-                // Now that the data retrieval is complete, continue with further operations
+                
                 processLastTicketBookingTime();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle database error
+                
             }
         });
     }
 
     private void processLastTicketBookingTime() {
-        // This method is called after lastTicketBookingTime retrieval is complete
+        
         Log.d("LastBookingTime", "Last Ticket Booking Time: " + lastTicketBookingTimeFromDatabase);
 
-        // Further processing based on lastTicketBookingTime
-        // Ensure to handle null or empty values appropriately
+        
+        
 
         if (lastTicketBookingTimeFromDatabase != null && !lastTicketBookingTimeFromDatabase.equals("0000-00-00 00:00:00")) {
-            // Process the retrieved lastTicketBookingTime
+            
             String HoursAndMinutesFromLastTicketBookingTimeFromDatabase = lastTicketBookingTimeFromDatabase.split(" ")[1].replaceAll(":", "").substring(0, 4);
             int HoursAndMinutesFromLastTicketBookingTimeFromDatabaseInInteger = Integer.parseInt(HoursAndMinutesFromLastTicketBookingTimeFromDatabase);
 
 
-            // Check if the dates from currentTimeWithAllData and lastTicketBookingTimeFromDatabase are different
+            
             if (!isSameDate(currentTimeWithAllData, lastTicketBookingTimeFromDatabase)) {
                 setAvailableSeatsFromTotalNumberOfSeats(busPlateNumber);
             } else if (busStartTimeInInteger>HoursAndMinutesFromLastTicketBookingTimeFromDatabaseInInteger || HoursAndMinutesFromLastTicketBookingTimeFromDatabaseInInteger>busEndTimeInInteger){
@@ -543,19 +543,19 @@ public class BusSearchResultActivity extends AppCompatActivity {
     }
 
     private void setAvailableSeatsFromTotalNumberOfSeats(String plateNumber) {
-        // Get a reference to the specific bus with the given plate number
+        
         DatabaseReference busRef = FirebaseDatabase.getInstance().getReference("Buses").child(plateNumber);
 
-        // Add a ValueEventListener to listen for changes in the data at the specified location
+        
         busRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Check if the bus exists in the database
+                
                 if (dataSnapshot.exists()) {
-                    // Get the numberOfSeats for the bus
+                    
                     int numberOfSeats = dataSnapshot.child("numberOfSeats").getValue(Integer.class);
                     Log.d("Seats","new seats" + numberOfSeats);
-                    // Update the availableSeats to match the numberOfSeats
+                    
                     busRef.child("availableSeats").setValue(numberOfSeats);
                     getAvailableSeats(busPlateNumber);
                 } else {
@@ -565,7 +565,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle database error
+                
             }
         });
     }
@@ -576,10 +576,10 @@ public class BusSearchResultActivity extends AppCompatActivity {
 
 
     private boolean isSameDate(String date1, String date2) {
-        // Extract the dates from the strings
+        
         String[] parts1 = date1.split(" ");
         String[] parts2 = date2.split(" ");
-        // Compare only the dates (without time)
+        
         return parts1[0].equals(parts2[0]);
     }
 
@@ -595,7 +595,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
 
     protected void onStop() {
         super.onStop();
-        finish(); // Finish the current activity when leaving
+        finish(); 
     }
 
     @Override

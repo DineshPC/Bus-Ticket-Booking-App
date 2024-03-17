@@ -17,7 +17,7 @@ public class Bus {
     private double maximumFare;
 
 
-    // Constructor
+    
     public Bus(String busNumber, String busPlateNumber, int numberOfSeats, int availableSeats, String source, String destination,
                List<String> selectedRoutes, double minimumFare, double intermediateFare, double maximumFare, List<TimeBoxData> timeBoxDataList) {
         this.busNumber = busNumber;
@@ -33,7 +33,7 @@ public class Bus {
         this.availableSeats = availableSeats;
     }
 
-    // Getters and setters
+    
     public String getBusNumber() {
         return busNumber;
     }

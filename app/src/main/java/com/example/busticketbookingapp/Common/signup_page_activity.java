@@ -40,7 +40,7 @@ public class signup_page_activity extends AppCompatActivity {
         signUpButton = findViewById(R.id.buttonSignUp);
 
 
-        // Sign up button logic
+        
         signUpButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -56,7 +56,7 @@ public class signup_page_activity extends AppCompatActivity {
                 String confirm_password = signUpConfirmPassword.getText().toString();
                 String mobile_number = signUpMobile_no.getText().toString();
 
-                // Validation logic
+                
                 if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirm_password) || TextUtils.isEmpty(mobile_number)) {
                     Toast.makeText(signup_page_activity.this, "All fields must be filled", Toast.LENGTH_SHORT).show();
                     return;
@@ -83,10 +83,10 @@ public class signup_page_activity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            // Handle case when username already exists
+                            
                             Toast.makeText(signup_page_activity.this, "Username already exists", Toast.LENGTH_SHORT).show();
                         } else {
-                            // All validations passed, proceed with registration
+                            
                             HelperClass helperClass = new HelperClass(name, email, username, password, confirm_password, mobile_number);
                             reference.child(username).setValue(helperClass);
 
@@ -107,6 +107,6 @@ public class signup_page_activity extends AppCompatActivity {
     }
     protected void onStop() {
         super.onStop();
-        finish(); // Finish the current activity when leaving
+        finish(); 
     }
 }

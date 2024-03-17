@@ -58,7 +58,7 @@ public class AdminAdminUser extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String role = snapshot.child("role").getValue(String.class);
                     if (role != null && role.equals("admin")) {
-                        // If the role is 'admin', proceed with processing the snapshot
+                        
                         String realName = snapshot.child("name").getValue(String.class);
                         String userName = snapshot.child("username").getValue(String.class);
                         String mobileNumber = snapshot.child("mobile_no").getValue(String.class);
@@ -97,8 +97,8 @@ public class AdminAdminUser extends AppCompatActivity {
         textView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                String username = extractUsernameFromText(text); // Extract username from text
-                showDeleteDialog(username); // Show delete dialog when long click
+                String username = extractUsernameFromText(text); 
+                showDeleteDialog(username); 
                 return true;
             }
         });
@@ -106,11 +106,11 @@ public class AdminAdminUser extends AppCompatActivity {
     }
 
     private String extractUsernameFromText(String text) {
-        String[] parts = text.split("\n"); // the username is on the second line
+        String[] parts = text.split("\n"); 
         if (parts.length > 1) {
-            return parts[1].split(" : ")[1]; // the format is "Username : username"
+            return parts[1].split(" : ")[1]; 
         }
-        return ""; // Return empty string if username extraction fails
+        return ""; 
     }
 
     private void showDeleteDialog(final String text) {
@@ -118,17 +118,17 @@ public class AdminAdminUser extends AppCompatActivity {
         builder.setMessage("Delete " + text + "?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // Delete the TextView from the layout
+                        
                         deleteTextView(text);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // Dismiss the dialog
+                        
                         dialog.dismiss();
                     }
                 });
-        // Create and show the dialog
+        
         builder.create().show();
     }
 
@@ -139,7 +139,7 @@ public class AdminAdminUser extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    snapshot.getRef().removeValue(); // Remove the node from Firebase
+                    snapshot.getRef().removeValue(); 
                 }
                 makeToast("Removed");
             }
@@ -150,7 +150,7 @@ public class AdminAdminUser extends AppCompatActivity {
             }
         });
 
-        // Remove the TextView from the layout
+        
         for (int i = 0; i < linearLayoutContainer.getChildCount(); i++) {
             View child = linearLayoutContainer.getChildAt(i);
             if (child instanceof TextView) {
@@ -167,7 +167,7 @@ public class AdminAdminUser extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Remove ValueEventListener to prevent memory leaks
+        
         if (valueEventListener != null) {
             routesReference.removeEventListener(valueEventListener);
         }
@@ -180,7 +180,7 @@ public class AdminAdminUser extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        finish(); // Finish the current activity when leaving
+        finish(); 
     }
 
 

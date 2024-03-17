@@ -35,37 +35,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Booked_Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Booked_Fragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    
+    
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    
     private String mParam1;
     private String mParam2;
     public String username;
     LinearLayout parentLayout;
 
     public Booked_Fragment() {
-        // Required empty public constructor
+        
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Booked_Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
+    
+    
     public static Booked_Fragment newInstance(String param1, String param2) {
         Booked_Fragment fragment = new Booked_Fragment();
         Bundle args = new Bundle();
@@ -91,25 +80,25 @@ public class Booked_Fragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("getUsernameFromPrefrence", Context.MODE_PRIVATE);
         username = prefs.getString("username", "");
 
-        // Inflate the layout for this fragment
+        
         View rootView = inflater.inflate(R.layout.fragment_history_, container, false);
         parentLayout = rootView.findViewById(R.id.linear_layout_container);
-//        List<String> ticketIds = new ArrayList<>();
+
         String ticketIds;
-        // Retrieve user ticket IDs from the database
+        
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
         Query checkUserDatabase = reference.orderByChild("username").equalTo(username);
         checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Check if data exists
+                
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                        // Get user ticket IDs
+                        
                         DataSnapshot ticketsSnapshot = userSnapshot.child("ticketsBookByUser");
                         Log.d("testing log", "1");
                         if (ticketsSnapshot.exists()) {
-                            // Iterate through ticket IDs
+                            
                             for (DataSnapshot ticketSnapshot : ticketsSnapshot.getChildren()) {
                                 String ticketId = ticketSnapshot.getValue(String.class);
                                 getTicketData(ticketId);
@@ -119,14 +108,14 @@ public class Booked_Fragment extends Fragment {
                         }
                     }
                 } else {
-                    // Handle case where no data exists
+                    
                     Toast.makeText(getContext(), "No user data found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle onCancelled
+                
             }
         });
         return rootView;
@@ -139,7 +128,7 @@ public class Booked_Fragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Get ticket data
+                    
                     String busPlateNumber = dataSnapshot.child("busPlateNumber").getValue(String.class);
                     String noOfPassenger = dataSnapshot.child("noOfPassengers").getValue(Long.class).toString();
                     Boolean ticketIsCheckByDriver = dataSnapshot.child("ticketIsCheckByDriver").getValue(Boolean.class);
@@ -172,19 +161,19 @@ public class Booked_Fragment extends Fragment {
                     textView.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            // Call your function here
+                            
                             ticketReceipt(ticket_id);
-                            return true; // Consume the long click event
+                            return true; 
                         }
                     });
 
                     textView.setTextSize(16);
-                    // Add TextView to parent layout
+                    
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                     );
-                    layoutParams.setMargins(0, 16, 0, 16); // Adjust margins as needed
+                    layoutParams.setMargins(0, 16, 0, 16); 
                     textView.setPadding(20, 10, 20, 10);
                     textView.setLayoutParams(layoutParams);
                     parentLayout.addView(textView);
@@ -196,7 +185,7 @@ public class Booked_Fragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle onCancelled
+                
             }
         });
     }
@@ -204,17 +193,17 @@ public class Booked_Fragment extends Fragment {
     private void ticketReceipt(String ticketId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         ImageView imageView = new ImageView(getContext());
-        // Generate the QR code bitmap
+        
         Bitmap qrCodeBitmap = generateQRCodeBitmap(ticketId, 512, 512);
 
-        // Set the QR code bitmap to the ImageView
+        
         imageView.setImageBitmap(qrCodeBitmap);
         builder.setView(imageView)
                 .setMessage("Ticket ID: " + ticketId)
                 .setCancelable(false)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel(); // Dismiss the dialog when Cancel button is clicked
+                        dialog.cancel(); 
                     }
                 });
         AlertDialog alert = builder.create();
@@ -236,21 +225,21 @@ public class Booked_Fragment extends Fragment {
     }
 
     private Bitmap generateQRCodeBitmap(String data, int width, int height) {
-        // Create a QRCodeWriter
+        
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
 
         try {
-            // Set QR code parameters
+            
             Map<EncodeHintType, Object> hints = new HashMap<>();
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
             hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
             hints.put(EncodeHintType.MARGIN, 1);
 
-            // Generate the QR code
+            
             BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, width, height, hints);
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 
-            // Fill the Bitmap with QR code data
+            
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     bitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);

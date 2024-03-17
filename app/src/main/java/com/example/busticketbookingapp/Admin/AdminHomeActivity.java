@@ -58,7 +58,7 @@ public class AdminHomeActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                // Start QR code scanner
+                
                 IntentIntegrator integrator = new IntentIntegrator(AdminHomeActivity.this);
                 integrator.setOrientationLocked(true);
                 integrator.setPrompt("Scan a QR code");
@@ -111,11 +111,11 @@ public class AdminHomeActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() != null) {
-                // QR code scanned successfully, result is stored in result.getContents()
+                
                 String qrCodeValue = result.getContents();
                 Log.d("QR Code", qrCodeValue);
                 checkTicket(qrCodeValue);
-                // Now you can use qrCodeValue as needed, for example, display in a Toast
+                
                 Toast.makeText(AdminHomeActivity.this, "Scanned QR Code: " + qrCodeValue, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(AdminHomeActivity.this, "Scan cancelled", Toast.LENGTH_SHORT).show();
@@ -148,7 +148,7 @@ public class AdminHomeActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle database error
+                
             }
         });
     }
@@ -163,14 +163,14 @@ public class AdminHomeActivity extends AppCompatActivity {
                         "Ticket ID: " + ticketId)
                 .setPositiveButton("Check", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Perform action when the "Check" button is clicked
-                        // For example, you can call a method to mark the ticket as checked
+                        
+                        
                         markTicketAsChecked(ticketId);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing when the "Cancel" button is clicked
+                        
                         dialog.cancel();
                     }
                 })
@@ -194,7 +194,7 @@ public class AdminHomeActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle database error
+                
             }
         });
     }
@@ -220,7 +220,7 @@ public class AdminHomeActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing when the "Cancel" button is clicked
+                        
                         dialog.cancel();
                     }
                 });

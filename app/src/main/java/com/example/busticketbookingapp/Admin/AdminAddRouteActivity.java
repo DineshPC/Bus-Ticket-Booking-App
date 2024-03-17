@@ -55,13 +55,13 @@ public class AdminAddRouteActivity extends AppCompatActivity {
 
     public void addRoute(String UID, String routeName){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("routes");
-        reference.child(UID).child("ID").setValue(UID); // Set UID under the route key
-        reference.child(UID).child("name").setValue(routeName); // Set routeName under the route key
+        reference.child(UID).child("ID").setValue(UID); 
+        reference.child(UID).child("name").setValue(routeName); 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        finish(); // Finish the current activity when leaving
+        finish(); 
     }
 }

@@ -6,7 +6,7 @@ public class BusSearchClass {
     private String busPlateNumber;
     private List<String> selectedRoutes;
 
-    // Default constructor (required for Firebase)
+    
     public BusSearchClass() {
     }
 

@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle onCancelled
+                
             }
         });
     }
@@ -154,6 +154,6 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onStop() {
         super.onStop();
-        finish(); // Finish the current activity when leaving
+        finish(); 
     }
 }

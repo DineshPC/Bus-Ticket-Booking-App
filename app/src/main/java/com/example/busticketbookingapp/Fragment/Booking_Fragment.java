@@ -31,11 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Fragment simple {@link Fragment} subclass.
- * Use the {@link Booking_Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Booking_Fragment extends Fragment {
 
     private AutoCompleteTextView sourceAutoCompleteTextView, destinationAutoCompleteTextView;
@@ -49,28 +45,21 @@ public class Booking_Fragment extends Fragment {
 
 
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    
+    
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    
     private String mParam1;
     private String mParam2;
 
     public Booking_Fragment() {
-        // Required empty public constructor
+        
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return Fragment new instance of fragment Dashbord_Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
+    
+    
     public static Booking_Fragment newInstance(String param1, String param2) {
         Booking_Fragment fragment = new Booking_Fragment();
         Bundle args = new Bundle();
@@ -94,21 +83,21 @@ public class Booking_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_booking, container, false);
 
-        // Initialize views
+        
         sourceAutoCompleteTextView = rootView.findViewById(R.id.sourceAutoCompleteTextView);
         destinationAutoCompleteTextView = rootView.findViewById(R.id.destinationAutoCompleteTextView);
         searchButton = rootView.findViewById(R.id.searchButton);
 
-        // Initialize Firebase reference
+        
         placesRef = FirebaseDatabase.getInstance().getReference("routes");
 
-        // Initialize place names list and adapter
+        
         placeNames = new ArrayList<>();
         locationAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, placeNames);
         sourceAutoCompleteTextView.setAdapter(locationAdapter);
         destinationAutoCompleteTextView.setAdapter(locationAdapter);
 
-        // Fetch places name from Firebase
+        
         fetchPlaceNames();
 
         sourceAutoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
@@ -123,7 +112,7 @@ public class Booking_Fragment extends Fragment {
 
         searchButton.setOnClickListener(v -> {
             if (selectedSource != null && selectedDestination != null) {
-                // Perform search
+                
                 if (!selectedSource.equals(selectedDestination)) {
 
                     SharedPreferences preferences = requireActivity().getSharedPreferences("MY_PREFERENCES", Context.MODE_PRIVATE);
@@ -141,19 +130,19 @@ public class Booking_Fragment extends Fragment {
 
 
 
-                            // Get the FragmentManager from the parent activity
+                            
                             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
 
-                            // Begin a fragment transaction
+                            
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                            // Remove the current fragment from the container, if any
+                            
                             Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
                             if (currentFragment != null) {
                                 fragmentTransaction.remove(currentFragment);
                             }
 
-                            // Replace it with the new fragment (BusListFragment)
+                            
                             BusListFragment busListFragment = new BusListFragment(busList);
                             fragmentTransaction.replace(R.id.fragment_container, busListFragment)
                                     .commit();
@@ -184,7 +173,7 @@ public class Booking_Fragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle database error
+                
             }
         });
     }

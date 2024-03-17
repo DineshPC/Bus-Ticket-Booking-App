@@ -93,7 +93,7 @@ public class AdminBusActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View v) {
                 String platNumberFromText = extractPlatNumberFromText(text);
-                showDeleteDialog(platNumberFromText); // Show delete dialog when long click
+                showDeleteDialog(platNumberFromText); 
                 return true;
             }
         });
@@ -101,11 +101,11 @@ public class AdminBusActivity extends AppCompatActivity {
     }
 
     private String extractPlatNumberFromText(String text) {
-        String[] parts = text.split("\n"); // the platenumber is on the first line
+        String[] parts = text.split("\n"); 
         if (parts.length > 0) {
-            return parts[0]; // the format is "platenumber"
+            return parts[0]; 
         }
-        return ""; // Return empty string if username extraction fails
+        return ""; 
     }
 
     private void showDeleteDialog(final String text) {
@@ -113,17 +113,17 @@ public class AdminBusActivity extends AppCompatActivity {
         builder.setMessage("Delete " + text + "?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // Delete the TextView from the layout
+                        
                         deleteTextView(text);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // Dismiss the dialog
+                        
                         dialog.dismiss();
                     }
                 });
-        // Create and show the dialog
+        
         builder.create().show();
     }
 
@@ -132,9 +132,9 @@ public class AdminBusActivity extends AppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Iterate through the results and delete the node
+                
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    snapshot.getRef().removeValue(); // Remove the node from Firebase
+                    snapshot.getRef().removeValue(); 
                 }
             }
 
@@ -144,7 +144,7 @@ public class AdminBusActivity extends AppCompatActivity {
             }
         });
 
-        // Remove the TextView from the layout
+        
         for (int i = 0; i < linearLayoutContainer.getChildCount(); i++) {
             View child = linearLayoutContainer.getChildAt(i);
             if (child instanceof TextView) {
@@ -159,6 +159,6 @@ public class AdminBusActivity extends AppCompatActivity {
 
     protected void onStop() {
         super.onStop();
-        finish(); // Finish the current activity when leaving
+        finish(); 
     }
 }

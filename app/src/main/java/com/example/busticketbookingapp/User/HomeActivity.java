@@ -16,7 +16,7 @@ import android.view.MenuItem;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     BottomNavigationView bottomNavigationView;
-    Fragment bookingFragment; // Instance variable to hold the Booking Fragment
+    Fragment bookingFragment; 
 
     @SuppressLint("MissingInflatedId")
     @Override
