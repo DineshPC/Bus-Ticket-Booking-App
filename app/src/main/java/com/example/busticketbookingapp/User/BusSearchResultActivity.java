@@ -35,10 +35,10 @@ import java.util.concurrent.CompletableFuture;
 
 public class BusSearchResultActivity extends AppCompatActivity {
 
-    private String busPlateNumber = null;
-    private String busNumber = "";
+    public String busPlateNumber = null;
+    public String busNumber = "";
 
-    TextView plateNumberTextView, busNumberTextView, busSeatTextView, busSourceAndDestinationTextView, userSourceAndDestinationTextView, busStopTextView, busStatusTextView;
+    TextView plateNumberTextView, busNumberTextView, busSeatTextView, busSourceAndDestinationTextView, userSourceAndDestinationTextView, busStopTextView, busStatusTextView, priceTextView;
     Button bookBusBtn;
     RadioGroup radioGroup;
     DatabaseReference busesRef;
@@ -51,6 +51,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
     String userSourceName, userDestinationName, username;
     List<String> selectedRoutes = new ArrayList<>();
     int currentTimeWithHourAndMinuteInInteger;
+    int ticketPricePerPerson = 0, messagePrintedSameDirection = 0 , messagePrintedOppositeDirection = 0;
 
 
 
@@ -71,6 +72,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
         busSourceAndDestinationTextView = findViewById(R.id.textViewTravelDirection);
         busStopTextView = findViewById(R.id.textViewBusStops);
         busStatusTextView = findViewById(R.id.textViewBusStatus);
+        priceTextView = findViewById(R.id.textView5);
         bookBusBtn.setEnabled(false);
 
         SharedPreferences preferences = getSharedPreferences("MY_PREFERENCES", Context.MODE_PRIVATE);
@@ -309,10 +311,8 @@ public class BusSearchResultActivity extends AppCompatActivity {
                                 String busPlateNumber = busSnapshot.child("busPlateNumber").getValue(String.class);
                                 Toast.makeText(BusSearchResultActivity.this, "Bus " + busNumber + " (" + busPlateNumber + ") is available.", Toast.LENGTH_SHORT).show();
                                 updateBusAvailableSeatFromLastTicketBookingTime();
-
                                 getBusSourceAndDestination();
                                 getBusStops(plateNumber);
-
                                 return;
                             }
                         }
@@ -383,8 +383,9 @@ public class BusSearchResultActivity extends AppCompatActivity {
         DatabaseReference busesStatusRef = FirebaseDatabase.getInstance().getReference("Buses");
         Query query = busesStatusRef.orderByChild("busPlateNumber").equalTo(plateNumber);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     for (DataSnapshot routeSnapshot : snapshot.child("selectedRoutes").getChildren()) {
                         String route = routeSnapshot.getValue(String.class);
@@ -401,6 +402,11 @@ public class BusSearchResultActivity extends AppCompatActivity {
                     }
                     busStopTextView.setText(temp + temp2);
                     getBusStatus(selectedRoutes);
+                    int sourceIndex = selectedRoutes.indexOf(userSourceName);
+                    int destinationIndex = selectedRoutes.indexOf(userDestinationName);
+                    int indexDifference = destinationIndex - sourceIndex;
+                    getTicketPricePerPerson(indexDifference);
+                    checkBusDirectionMatchWithUserDestination();
                 }
             }
 
@@ -411,20 +417,28 @@ public class BusSearchResultActivity extends AppCompatActivity {
         });
     }
 
-    private void checkBusDirectionMatchWithUserDestination(List<String> selectedRoutes, String source, String destination) {
-        int sourceIndex = selectedRoutes.indexOf(source);
-        int destinationIndex = selectedRoutes.indexOf(destination);
+    private void checkBusDirectionMatchWithUserDestination() {
+        int sourceIndex = selectedRoutes.indexOf(userSourceName);
+        int destinationIndex = selectedRoutes.indexOf(userDestinationName);
         int indexDifference = destinationIndex - sourceIndex;
 
         
         if (indexDifference > 0) {
-            makeToast("Bus Travel in same direction as User");
+            if (messagePrintedSameDirection == 0) {
+                makeToast("Bus Travel in same direction as User");
+                messagePrintedSameDirection++;
+            }
+            bookBusBtn.setEnabled(true);
             Log.d("test" , "user travel in same direction as bus");
-        } else {
-            makeToast("Bus Travel in opposite direction from User");
-            Log.d("test" , "user travel in different direction as bus");
+        } else if (indexDifference < 0) {
+            if (messagePrintedOppositeDirection == 0){
+                makeToast("Bus Travel in opposite direction from User");
+                messagePrintedOppositeDirection++;
+            }
             bookBusBtn.setEnabled(false);
+            Log.d("test" , "user travel in different direction as bus");
         }
+
     }
 
     public void getAvailableSeats(String busPlateNumber){
@@ -442,31 +456,30 @@ public class BusSearchResultActivity extends AppCompatActivity {
                     busSeatTextView.setText("Available Seat: " + availableSeat);
                     if (availableSeat>0){
                         bookBusBtn.setEnabled(true);
+                        //priceTextView.setText(""+ticketPricePerPerson);
                     }
                     radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            
-                            
 
                             RadioButton selectedRadioButton = findViewById(checkedId);
                             String selectedText = selectedRadioButton.getText().toString();
                             noOfPassengersString = selectedText;
                             int selectedTextInt = Integer.parseInt(selectedText);
-
+                            int price = selectedTextInt * ticketPricePerPerson;
+                            priceTextView.setText(""+price);
                             
                             
                             if (availableSeat >= selectedTextInt) {
                                 bookBusBtn.setEnabled(true);
-                                checkBusDirectionMatchWithUserDestination(selectedRoutes, userSourceName, userDestinationName);
-
+                                checkBusDirectionMatchWithUserDestination();
                             } else {
                                 bookBusBtn.setEnabled(false);
-                                checkBusDirectionMatchWithUserDestination(selectedRoutes, userSourceName, userDestinationName);
+                                checkBusDirectionMatchWithUserDestination();
                             }
                         }
                     });
-                   checkBusDirectionMatchWithUserDestination(selectedRoutes, userSourceName, userDestinationName);
+                   checkBusDirectionMatchWithUserDestination();
                 } else {
                     Toast.makeText(BusSearchResultActivity.this, "No data found for the bus plate number", Toast.LENGTH_SHORT).show();
                 }
@@ -475,6 +488,37 @@ public class BusSearchResultActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(BusSearchResultActivity.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void getTicketPricePerPerson(int indexDiff) {
+
+        int indexDifference = Math.abs(indexDiff);
+
+
+        DatabaseReference busesRef2 = FirebaseDatabase.getInstance().getReference("Buses").child(busPlateNumber);
+
+        busesRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int minFare = snapshot.child("minimumFare").getValue(Integer.class);
+                int interFare = snapshot.child("intermediateFare").getValue(Integer.class);
+                int maxFare = snapshot.child("maximumFare").getValue(Integer.class);
+
+                if (indexDifference>0 && indexDifference<=5){
+                    ticketPricePerPerson = minFare;
+                } else if (indexDifference>5 && indexDifference<=10){
+                    ticketPricePerPerson = interFare;
+                } else if (indexDifference>10){
+                    ticketPricePerPerson = maxFare;
+                }
+                priceTextView.setText(""+ticketPricePerPerson);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -593,13 +637,4 @@ public class BusSearchResultActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    protected void onStop() {
-        super.onStop();
-        finish(); 
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }
