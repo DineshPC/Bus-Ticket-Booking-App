@@ -3,6 +3,7 @@ package com.example.busticketbookingapp.Common;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.busticketbookingapp.Admin.AdminHomeActivity;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     EditText loginUserName;
     EditText loginPassword;
     Button loginBtn;
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -43,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         loginUserName = findViewById(R.id.editTextText2);
         loginPassword = findViewById(R.id.editTextPassword);
         loginBtn = findViewById(R.id.button2);
-
         loginBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 if(!validateUsername() || !validatePassword()){
 
                 }else {
+                    showLoadingScreen();
                     checkUser();
                 }
             }
@@ -114,9 +117,11 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     } else {
+                        hideLoadingScreen();
                         makeToast("Invalid Credentials");
                     }
                 } else {
+                    hideLoadingScreen();
                     makeToast("Username doesn't exist");
                 }
             }
@@ -143,6 +148,19 @@ public class MainActivity extends AppCompatActivity {
                 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
 
         editTextPassword.setInputType(inputType);
+    }
+
+    private void showLoadingScreen() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Logging in...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+    private void hideLoadingScreen() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 
     public void makeToast(String message){
