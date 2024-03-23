@@ -55,7 +55,7 @@ public class Profile_Fragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile_, container, false);
         usernameTextView = rootView.findViewById(R.id.userNameTextView);
 
-        prefs = requireContext().getSharedPreferences("getUsernameFromPrefrence", requireContext().MODE_PRIVATE);
+        prefs = requireContext().getSharedPreferences("getUsernameFromPreference", requireContext().MODE_PRIVATE);
         String username = prefs.getString("username", "");
 
         usernameTextView.setText("Username : " + username);

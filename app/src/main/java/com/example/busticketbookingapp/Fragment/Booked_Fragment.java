@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.busticketbookingapp.R;
@@ -42,7 +43,10 @@ public class Booked_Fragment extends Fragment {
     
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private ValueEventListener valueEventListener;
+    private Query checkUserDatabase;
+    private ProgressBar progressBar;
+    private TextView loadingText;
     
     private String mParam1;
     private String mParam2;
@@ -74,51 +78,62 @@ public class Booked_Fragment extends Fragment {
 
     }
 
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        SharedPreferences prefs = getActivity().getSharedPreferences("getUsernameFromPrefrence", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getActivity().getSharedPreferences("getUsernameFromPreference", Context.MODE_PRIVATE);
         username = prefs.getString("username", "");
 
-        
         View rootView = inflater.inflate(R.layout.fragment_history_, container, false);
         parentLayout = rootView.findViewById(R.id.linear_layout_container);
 
-        String ticketIds;
-        
+        parentLayout = rootView.findViewById(R.id.linear_layout_container);
+        progressBar = rootView.findViewById(R.id.progress_bar);
+        loadingText = rootView.findViewById(R.id.loading_text);
+
+        // Show loading screen
+        showLoadingScreen();
+
+        // Load data from Firebase
+        loadDataFromFirebase();
+
+        return rootView;
+    }
+
+    private void loadDataFromFirebase() {
+        SharedPreferences prefs = getActivity().getSharedPreferences("getUsernameFromPreference", Context.MODE_PRIVATE);
+        username = prefs.getString("username", "");
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
-        Query checkUserDatabase = reference.orderByChild("username").equalTo(username);
-        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        checkUserDatabase = reference.orderByChild("username").equalTo(username);
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                
+                if (getActivity() == null || !isAdded()) {
+                    return; // Fragment is not attached to activity
+                }
+
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                        
                         DataSnapshot ticketsSnapshot = userSnapshot.child("ticketsBookByUser");
-                        Log.d("testing log", "1");
                         if (ticketsSnapshot.exists()) {
-                            
                             for (DataSnapshot ticketSnapshot : ticketsSnapshot.getChildren()) {
                                 String ticketId = ticketSnapshot.getValue(String.class);
                                 getTicketData(ticketId);
-                                Log.d("testing log", "Id : " + ticketId);
                             }
-
                         }
                     }
                 } else {
-                    
-                    Toast.makeText(getContext(), "No user data found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "No ticket data found", Toast.LENGTH_SHORT).show();
+                    hideLoadingScreen();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                
+                hideLoadingScreen();
             }
-        });
-        return rootView;
+        };
+        checkUserDatabase.addListenerForSingleValueEvent(valueEventListener);
     }
 
     private void getTicketData(String ticketId) {
@@ -127,8 +142,15 @@ public class Booked_Fragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (getActivity() == null || !isAdded()) {
+                    return; // Fragment is not attached to activity
+                }
+
+                if (parentLayout == null) {
+                    return; // UI layout not available
+                }
                 if (dataSnapshot.exists()) {
-                    
+                    hideLoadingScreen();
                     String busPlateNumber = dataSnapshot.child("busPlateNumber").getValue(String.class);
                     String noOfPassenger = dataSnapshot.child("noOfPassengers").getValue(Long.class).toString();
                     Boolean ticketIsCheckByDriver = dataSnapshot.child("ticketIsCheckByDriver").getValue(Boolean.class);
@@ -185,7 +207,7 @@ public class Booked_Fragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                
+                hideLoadingScreen();
             }
         });
     }
@@ -219,9 +241,14 @@ public class Booked_Fragment extends Fragment {
         super.onStop();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        super.onDestroyView();
+        // Remove the ValueEventListener to prevent memory leaks
+        if (checkUserDatabase != null && valueEventListener != null) {
+            checkUserDatabase.removeEventListener(valueEventListener);
+        }
     }
 
     private Bitmap generateQRCodeBitmap(String data, int width, int height) {
@@ -251,6 +278,16 @@ public class Booked_Fragment extends Fragment {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void showLoadingScreen() {
+        progressBar.setVisibility(View.VISIBLE);
+        loadingText.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingScreen() {
+        progressBar.setVisibility(View.GONE);
+        loadingText.setVisibility(View.GONE);
     }
 
 }

@@ -79,7 +79,7 @@ public class BusSearchResultActivity extends AppCompatActivity {
         userSourceName = preferences.getString("SOURCE_NAME", "");
         userDestinationName = preferences.getString("DESTINATION_NAME", "");
 
-        SharedPreferences prefs = getSharedPreferences("getUsernameFromPrefrence", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("getUsernameFromPreference", Context.MODE_PRIVATE);
         username = prefs.getString("username", "");
         userSourceAndDestinationTextView.setText("User Source : " + userSourceName + "\nUser Destination : " + userDestinationName);
 

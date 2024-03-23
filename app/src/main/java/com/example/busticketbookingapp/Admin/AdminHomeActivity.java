@@ -51,7 +51,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         addAdminUserBtn = findViewById(R.id.button5);
         checkTicket = findViewById(R.id.button7);
 
-        SharedPreferences prefs = getSharedPreferences("getUsernameFromPrefrence", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("getUsernameFromPreference", Context.MODE_PRIVATE);
         username = prefs.getString("username", "");
 
         checkTicket.setOnClickListener(new View.OnClickListener(){

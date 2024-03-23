@@ -48,9 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                String currentTime = sdf.format(new Date());
-                makeToast(currentTime);
                 if(!validateUsername() || !validatePassword()){
 
                 }else {
@@ -106,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if (Objects.equals(passwordFromDB, userPassword)) {
-                        SharedPreferences.Editor editor = getSharedPreferences("getUsernameFromPrefrence", MODE_PRIVATE).edit();
+                        SharedPreferences.Editor editor = getSharedPreferences("getUsernameFromPreference", MODE_PRIVATE).edit();
                         editor.putString("username", userUsername);
                         editor.apply();
                         if (Objects.equals(roleFromDB, "admin")) {

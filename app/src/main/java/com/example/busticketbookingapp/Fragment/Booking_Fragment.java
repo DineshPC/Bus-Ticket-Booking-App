@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.busticketbookingapp.Common.BusSearchClass;
@@ -38,6 +39,7 @@ public class Booking_Fragment extends Fragment {
     private Button searchButton;
     private List<String> placeNames;
     private ArrayAdapter<String> locationAdapter;
+    private ImageButton swapButton;
     FragmentManager fragmentManager;
 
     DatabaseReference placesRef;
@@ -87,7 +89,7 @@ public class Booking_Fragment extends Fragment {
         sourceAutoCompleteTextView = rootView.findViewById(R.id.sourceAutoCompleteTextView);
         destinationAutoCompleteTextView = rootView.findViewById(R.id.destinationAutoCompleteTextView);
         searchButton = rootView.findViewById(R.id.searchButton);
-
+        swapButton = rootView.findViewById(R.id.swapButton);
         
         placesRef = FirebaseDatabase.getInstance().getReference("routes");
 
