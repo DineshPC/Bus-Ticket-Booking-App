@@ -369,13 +369,23 @@ public class BusSearchResultActivity extends AppCompatActivity {
         int busArrivingTime = (int) (timeTakenForReachingEachStop - lastDepartedTime);
 
 
-        String busDepartedFrom = selectedRoutes.get(noOfStopCompletedDeparted-1);
-        String busArrivingAt = selectedRoutes.get(noOfStopCompletedDeparted);
+        if (noOfStopCompletedDeparted > 0) {
+            String busDepartedFrom = selectedRoutes.get(noOfStopCompletedDeparted - 1);
+            String busArrivingAt = selectedRoutes.get(noOfStopCompletedDeparted);
 
-        String busStatus = "Departed from - " + busDepartedFrom + " ( " + lastDepartedTime + " minutes ago )"+
-                            "\nArriving At - " + busArrivingAt + " ( in " + busArrivingTime + " minutes )";
+            String busStatus = "Departed from - " + busDepartedFrom + " ( " + lastDepartedTime + " minutes ago )"+
+                    "\nArriving At - " + busArrivingAt + " ( in " + busArrivingTime + " minutes )";
 
-        busStatusTextView.setText(busStatus);
+            busStatusTextView.setText(busStatus);
+        } else {
+            String busDepartedFrom = selectedRoutes.get(noOfStopCompletedDeparted);
+            String busArrivingAt = selectedRoutes.get(noOfStopCompletedDeparted+1);
+
+            String busStatus = "Departed from - " + busDepartedFrom + " ( " + lastDepartedTime + " minutes ago )"+
+                    "\nArriving At - " + busArrivingAt + " ( in " + busArrivingTime + " minutes )";
+
+            busStatusTextView.setText(busStatus);
+        }
 
     }
 
