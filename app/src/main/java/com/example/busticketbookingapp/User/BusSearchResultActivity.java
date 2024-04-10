@@ -593,6 +593,8 @@ public class BusSearchResultActivity extends AppCompatActivity {
             }else{
                 getAvailableSeats(busPlateNumber);
             }
+        } else {
+            getAvailableSeats(busPlateNumber);
         }
     }
 
