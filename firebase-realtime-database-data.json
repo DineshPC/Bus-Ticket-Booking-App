@@ -1,0 +1,400 @@
+{
+  "Buses": {
+    "1234567890": {
+      "availableSeats": 15,
+      "busNumber": "111",
+      "busPlateNumber": "1234567890",
+      "destination": "Mulund station",
+      "intermediateFare": 1,
+      "lastTicketBookingTime": "2024-03-19 11:33:19",
+      "maximumFare": 1,
+      "minimumFare": 1,
+      "numberOfSeats": 15,
+      "selectedRoutes": [
+        "Lokmanya Nagar",
+        "Mulund Railway Station (W)"
+      ],
+      "source": "Lokmanya nagar",
+      "timeBoxDataList": {
+        "timeBox_0": {
+          "direction": "Source to Destination",
+          "endTime": "0600",
+          "startTime": "0000"
+        },
+        "timeBox_1": {
+          "direction": "Source to Destination",
+          "endTime": "2359",
+          "startTime": "1800"
+        },
+        "timeBox_2": {
+          "direction": "Source to Destination",
+          "endTime": "1200",
+          "startTime": "0700"
+        }
+      }
+    },
+    "MH04LK1201": {
+      "availableSeats": 34,
+      "busNumber": "102",
+      "busPlateNumber": "MH04LK1201",
+      "destination": "Mulund Railway Station (W) ",
+      "intermediateFare": 13,
+      "lastStop": "",
+      "lastTicketBookingTime": "2024-03-24 14:55:44",
+      "maximumFare": 15,
+      "minimumFare": 10,
+      "numberOfSeats": 35,
+      "selectedRoutes": [
+        "Lokmanya Nagar",
+        "Yasodhan Nagar",
+        "Sawarkar Nagar",
+        "Kamgar hospital",
+        "Agriculture",
+        "Ambika Nagar",
+        "Road No 16",
+        "MIDC",
+        "Mulund Check naka",
+        "Kamgar hospital mulund",
+        "Ambaji Dham",
+        "Mulund Railway Station (W)"
+      ],
+      "source": "Lokmanya nagar",
+      "timeBoxDataList": {
+        "timeBox_0": {
+          "direction": "Source to Destination",
+          "endTime": "0635",
+          "startTime": "0615"
+        },
+        "timeBox_1": {
+          "direction": "Destination to Source",
+          "endTime": "0710",
+          "startTime": "0650"
+        },
+        "timeBox_2": {
+          "direction": "Source to Destination",
+          "endTime": "0800",
+          "startTime": "0730"
+        },
+        "timeBox_3": {
+          "direction": "Destination to Source",
+          "endTime": "0845",
+          "startTime": "0800"
+        },
+        "timeBox_4": {
+          "direction": "Source to Destination",
+          "endTime": "0930",
+          "startTime": "0900"
+        },
+        "timeBox_5": {
+          "direction": "Destination to Source",
+          "endTime": "1030",
+          "startTime": "1000"
+        },
+        "timeBox_6": {
+          "direction": "Source to Destination",
+          "endTime": "0060",
+          "startTime": "0030"
+        },
+        "timeBox_7": {
+          "direction": "Source to Destination",
+          "endTime": "2300",
+          "startTime": "1130"
+        }
+      }
+    },
+    "MH04LK1521": {
+      "availableSeats": 38,
+      "busNumber": "115",
+      "busPlateNumber": "MH04LK1521",
+      "destination": "Mulund Railway Station (W)",
+      "intermediateFare": 13,
+      "lastStop": "",
+      "lastTicketBookingTime": "",
+      "maximumFare": 15,
+      "minimumFare": 10,
+      "numberOfSeats": 40,
+      "selectedRoutes": [
+        "Laxmi Park (Thane)",
+        "Runwal Plaza",
+        "Yasodhan Nagar",
+        "Lokmanya Nagar",
+        "Indira Nagar",
+        "Wagle Circle",
+        "Road No 16",
+        "MIDC",
+        "Mulund Check naka",
+        "Muncipal School Mulund (W)",
+        "Paanch Rasta Mulund (W)",
+        "Mulund Railway Station (W)"
+      ],
+      "source": "Laxmi Park (Thane)",
+      "timeBoxDataList": {
+        "timeBox_0": {
+          "direction": "Source to Destination",
+          "endTime": "0720",
+          "startTime": "0700"
+        },
+        "timeBox_1": {
+          "direction": "Destination to Source",
+          "endTime": "0800",
+          "startTime": "0740"
+        },
+        "timeBox_2": {
+          "direction": "Source to Destination",
+          "endTime": "0850",
+          "startTime": "0820"
+        },
+        "timeBox_3": {
+          "direction": "Destination to Source",
+          "endTime": "0940",
+          "startTime": "0910"
+        },
+        "timeBox_4": {
+          "direction": "Source to Destination",
+          "endTime": "1030",
+          "startTime": "1000"
+        }
+      }
+    }
+  },
+  "routes": {
+    "RID000012": {
+      "ID": "RID000012",
+      "name": "Lokmanya Nagar"
+    },
+    "RID000013": {
+      "ID": "RID000013",
+      "name": "Yasodhan Nagar"
+    },
+    "RID000014": {
+      "ID": "RID000014",
+      "name": "Sawarkar Nagar"
+    },
+    "RID000015": {
+      "ID": "RID000015",
+      "name": "Kamgar hospital"
+    },
+    "RID000016": {
+      "ID": "RID000016",
+      "name": "Agriculture"
+    },
+    "RID000017": {
+      "ID": "RID000017",
+      "name": "Ambika Nagar"
+    },
+    "RID000018": {
+      "ID": "RID000018",
+      "name": "Road No 16"
+    },
+    "RID000019": {
+      "ID": "RID000019",
+      "name": "MIDC"
+    },
+    "RID000020": {
+      "ID": "RID000020",
+      "name": "Mulund Check naka"
+    },
+    "RID000021": {
+      "ID": "RID000021",
+      "name": "Kamgar hospital mulund"
+    },
+    "RID000022": {
+      "ID": "RID000022",
+      "name": "Ambaji Dham"
+    },
+    "RID000023": {
+      "ID": "RID000023",
+      "name": "Mulund Railway Station (W)"
+    },
+    "RID000029": {
+      "ID": "RID000029",
+      "name": "Laxmi Park (Thane)"
+    },
+    "RID000030": {
+      "ID": "RID000030",
+      "name": "Runwal Plaza"
+    },
+    "RID000031": {
+      "ID": "RID000031",
+      "name": "Indira Nagar"
+    },
+    "RID000032": {
+      "ID": "RID000032",
+      "name": "Wagle Circle"
+    },
+    "RID000033": {
+      "ID": "RID000033",
+      "name": "Muncipal School Mulund (W)"
+    },
+    "RID000034": {
+      "ID": "RID000034",
+      "name": "Paanch Rasta Mulund (W)"
+    }
+  },
+  "tickets": {
+    "TID000027": {
+      "ID": "TID000027",
+      "bookedByUser": "test",
+      "busPlateNumber": "MH04LK1201",
+      "noOfPassengers": 3,
+      "ticketBookingTime": "2024-03-17 07:45:46",
+      "ticketCheckTime": "2024-03-17 07:50:29",
+      "ticketIsCheckByDriver": true,
+      "ticketIsCheckByWhichDriver": "aaa",
+      "userDestinationName": "Mulund Railway Station (W)",
+      "userSourceName": "Lokmanya Nagar"
+    },
+    "TID000028": {
+      "ID": "TID000028",
+      "bookedByUser": "test",
+      "busPlateNumber": "1234567890",
+      "noOfPassengers": 4,
+      "ticketBookingTime": "2024-03-19 10:53:02",
+      "ticketCheckTime": "",
+      "ticketIsCheckByDriver": false,
+      "ticketIsCheckByWhichDriver": "",
+      "userDestinationName": "Mulund Railway Station (W)",
+      "userSourceName": "Lokmanya Nagar"
+    },
+    "TID000029": {
+      "ID": "TID000029",
+      "bookedByUser": "test",
+      "busPlateNumber": "1234567890",
+      "noOfPassengers": 2,
+      "ticketBookingTime": "2024-03-19 11:34:50",
+      "ticketCheckTime": "",
+      "ticketIsCheckByDriver": false,
+      "ticketIsCheckByWhichDriver": "",
+      "userDestinationName": "Mulund Railway Station (W)",
+      "userSourceName": "Lokmanya Nagar"
+    },
+    "TID000030": {
+      "ID": "TID000030",
+      "bookedByUser": "test",
+      "busPlateNumber": "MH04LK1201",
+      "noOfPassengers": 4,
+      "ticketBookingTime": "2024-03-20 13:01:32",
+      "ticketCheckTime": "",
+      "ticketIsCheckByDriver": false,
+      "ticketIsCheckByWhichDriver": "",
+      "userDestinationName": "Lokmanya Nagar",
+      "userSourceName": "Mulund Railway Station (W)"
+    },
+    "TID000031": {
+      "ID": "TID000031",
+      "bookedByUser": "test",
+      "busPlateNumber": "MH04LK1201",
+      "noOfPassengers": 4,
+      "ticketBookingTime": "2024-03-20 17:20:38",
+      "ticketCheckTime": "",
+      "ticketIsCheckByDriver": false,
+      "ticketIsCheckByWhichDriver": "",
+      "userDestinationName": "Mulund Railway Station (W)",
+      "userSourceName": "Lokmanya Nagar"
+    },
+    "TID000032": {
+      "ID": "TID000032",
+      "bookedByUser": "test",
+      "busPlateNumber": "MH04LK1201",
+      "noOfPassengers": 5,
+      "ticketBookingTime": "2024-03-21 13:16:17",
+      "ticketCheckTime": "",
+      "ticketIsCheckByDriver": false,
+      "ticketIsCheckByWhichDriver": "",
+      "userDestinationName": "Mulund Railway Station (W)",
+      "userSourceName": "Lokmanya Nagar"
+    },
+    "TID000033": {
+      "ID": "TID000033",
+      "bookedByUser": "test",
+      "busPlateNumber": "MH04LK1201",
+      "noOfPassengers": 5,
+      "ticketBookingTime": "2024-03-24 00:39:45",
+      "ticketCheckTime": "",
+      "ticketIsCheckByDriver": false,
+      "ticketIsCheckByWhichDriver": "",
+      "userDestinationName": "Mulund Railway Station (W)",
+      "userSourceName": "Sawarkar Nagar"
+    },
+    "TID000034": {
+      "ID": "TID000034",
+      "bookedByUser": "test2",
+      "busPlateNumber": "MH04LK1201",
+      "noOfPassengers": 1,
+      "ticketBookingTime": "2024-03-24 14:55:48",
+      "ticketCheckTime": "",
+      "ticketIsCheckByDriver": false,
+      "ticketIsCheckByWhichDriver": "",
+      "userDestinationName": "Sawarkar Nagar",
+      "userSourceName": "Lokmanya Nagar"
+    }
+  },
+  "uniqueId": {
+    "routeLastID": 34,
+    "ticketLastId": 34,
+    "userLastID": 3
+  },
+  "users": {
+    "abcd": {
+      "confirmPassword": "123",
+      "email": "aaa@aaa.com",
+      "mobile_no": "123",
+      "name": "abcd",
+      "password": "123",
+      "role": "admin",
+      "username": "aaa"
+    },
+    "dinesh": {
+      "confirmPassword": "123",
+      "email": "dinesh@gmail.com",
+      "mobile_no": "1213456789",
+      "name": "Dinesh Chaudhary",
+      "password": "123",
+      "role": "admin",
+      "username": "dinesh"
+    },
+    "sanshinde": {
+      "confirmPassword": "qwerty",
+      "email": "    @gmail.com",
+      "mobile_no": "0000000000",
+      "name": "Sanika",
+      "password": "qwerty",
+      "username": "sanshinde"
+    },
+    "test2": {
+      "confirmPassword": "   ",
+      "email": "test@gmail.com",
+      "mobile_no": "0000000000",
+      "name": "testName",
+      "password": "   ",
+      "ticketsBookByUser": {
+        "ticket_0": "TID000034"
+      },
+      "username": "test2"
+    },
+    "testName": {
+      "confirmPassword": "123",
+      "email": "test",
+      "mobile_no": "123",
+      "name": "testName",
+      "password": "123",
+      "ticketsBookByUser": {
+        "ticket_0": "TID000027",
+        "ticket_1": "TID000028",
+        "ticket_2": "TID000029",
+        "ticket_3": "TID000030",
+        "ticket_4": "TID000031",
+        "ticket_5": "TID000033"
+      },
+      "username": "test"
+    },
+    "user": {
+      "confirmPassword": "123",
+      "email": "a@gmail.com",
+      "mobile_no": "1231231111",
+      "name": "userName",
+      "password": "123",
+      "username": "user"
+    }
+  }
+}
